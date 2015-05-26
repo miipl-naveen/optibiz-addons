@@ -30,7 +30,8 @@
         'optibiz_sequence.xml',
         'views/report_header.xml',
         'views/report_saleorder.xml',
-        'views/product_category_attribute_view.xml'
+        'views/product_category_attribute_view.xml',
+        # 'views/product_template_attribute_form.xml'
 
     ],
     # only loaded in demonstration mode
