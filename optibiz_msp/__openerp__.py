@@ -1,23 +1,22 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "optibiz",
+    'name': "optibiz_msp",
 
     'summary': """
-        Short (1 phrase/line) summary of the module's purpose, used as
-        subtitle on modules listing or apps.openerp.com""",
+        This module provides the Minimum selling price module from optibiz""",
 
     'description': """
         Long description of module's purpose
     """,
 
     'author': "Optibiz India",
-    'website': "http://www.optibiz.in",
+    'website': "http://optibiz.in",
 
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/master/openerp/addons/base/module/module_data.xml
     # for the full list
     'category': 'Uncategorized',
-    'version': '0.4',
+    'version': '0.1',
 
     # any module necessary for this one to work correctly
     'depends': ['base','sale'],
@@ -25,14 +24,11 @@
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
-        'optibiz_landmark.xml',
-        'optibiz_report.xml',
-        'optibiz_sequence.xml',
-        'views/report_header.xml',
-        'views/report_saleorder.xml',
-
+        'optibiz_product_msp.xml',
+        'security/security.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
+        'demo.xml',
     ],
 }
