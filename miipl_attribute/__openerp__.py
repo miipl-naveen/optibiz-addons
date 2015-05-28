@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "optibiz_msp",
+    'name': "miipl_attribute",
 
     'summary': """
-        This module provides the Minimum selling price module from optibiz""",
+        Short (1 phrase/line) summary of the module's purpose, used as
+        subtitle on modules listing or apps.openerp.com""",
 
     'description': """
         Long description of module's purpose
     """,
 
-    'author': "Optibiz India",
-    'website': "http://optibiz.in",
+    'author': "Your Company",
+    'website': "http://www.yourcompany.com",
 
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/master/openerp/addons/base/module/module_data.xml
@@ -24,8 +25,6 @@
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
-        # 'optibiz_product_msp.xml',
-        'security/security.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
