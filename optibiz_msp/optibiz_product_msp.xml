@@ -10,6 +10,7 @@
                 <field name="selling_price" context="{'default_selling_price' : lst_price}"/>
                 <field name="min_selling_price" />
             </xpath>
+
         </field>
      </record>
      </data>

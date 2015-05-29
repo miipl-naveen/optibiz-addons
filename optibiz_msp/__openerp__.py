@@ -19,12 +19,13 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','sale','product'],
+    'depends': ['base','sale'],
 
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
-        # 'optibiz_product_msp.xml',
+        'optibiz_product_msp.xml',
+        'sale_order_view.xml',
         'security/security.xml'
     ],
     # only loaded in demonstration mode
