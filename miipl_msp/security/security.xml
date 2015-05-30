@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<openerp>
+    <data noupdate="1">
+
+    <record model="res.groups" id="group_sell_on_selling_price">
+        <field name="name">Can give discount on Executive Selling Price</field>
+    </record>
+    <record model="res.groups" id="group_sell_on_minimum_selling_price">
+        <field name="name">Can give discount on Manager Selling Price</field>
+    </record>
+    <record model="res.groups" id="group_sell_on_coordinator_selling_price">
+        <field name="name">Can give discount on Coordinator Selling Price</field>
+    </record>
+
+    <record model="res.groups" id="group_no_discounted_price">
+        <field name="name">Cannot give any discount</field>
+    </record>
+
+    </data>
+</openerp>
