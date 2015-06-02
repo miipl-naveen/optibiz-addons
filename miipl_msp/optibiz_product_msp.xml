@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-    <record model="ir.ui.view" id="optibiz.product_template_form_view">
+    <record model="ir.ui.view" id="miipl_msp.product_template_form_view">
         <field name="name">product.template.common.form.inherit</field>
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_form_view" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='list_price']" position="after">
-                <field name="coordinator_selling_price" context="{'default_selling_price' : lst_price}"/>
-                <field name="selling_price" context="{'default_selling_price' : lst_price}"/>
-                <field name="min_selling_price" />
+                <field name="coordinator_selling_price" context="{'default_selling_price' : lst_price}" groups="miipl_msp.group_sell_on_coordinator_selling_price"/>
+                <field name="selling_price" context="{'default_selling_price' : lst_price}" groups="miipl_msp.group_sell_on_selling_price"/>
+                <field name="min_selling_price" groups="miipl_msp.group_sell_on_minimum_selling_price"/>
             </xpath>
 
         </field>
