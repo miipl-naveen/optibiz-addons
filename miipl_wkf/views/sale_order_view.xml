@@ -1,0 +1,22 @@
+<openerp>
+    <data>
+        <!-- Inherit the sale order model's form view and customize -->
+        <record id="sale_form_view" model="ir.ui.view">
+            <field name="name">optibiz.sale.order.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <field name="state" position="replace">
+                    <field name="state" widget="statusbar" statusbar_visible="draft,sent,invoiced,done" statusbar_colors='{"invoice_except":"red","waiting_date":"blue","waiting_mgr_approval":"red","waiting_exec_approval":"red"}'/>
+                </field>
+
+                <field name="state" position="before">
+                  <button string="Request Executive Approval" type="workflow" name="signal_exec_approval_state_forward" states="draft" class="oe_highlight" groups="miipl_msp.group_sell_on_coordinator_selling_price"/>
+                  <button string="Mark as sent" type="workflow" name="signal_quotation_sent" states="draft,waiting_exec_approval,waiting_mgr_approval" class="oe_highlight"/>
+                  <button string="Request Manager Approval" type="workflow" name="signal_exec_approval_to_mgr_approval_forward" states="waiting_exec_approval" class="oe_highlight" groups="miipl_msp.group_sell_on_selling_price"/>
+                  <!-- <button string="Mark as sent" type="workflow" name="signal_quotation_sent" states="draft, waiting_mgr_approval" class="oe_highlight" groups="miipl_msp.group_sell_on_selling_price"/> -->
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>

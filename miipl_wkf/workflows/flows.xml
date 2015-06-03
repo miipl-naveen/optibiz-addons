@@ -1,0 +1,48 @@
+<openerp>
+    <data>
+        <!-- Create new activity for the new state -->
+        <record id="waiting_mgr_approval_state" model="workflow.activity">
+            <field name="wkf_id" ref="sale.wkf_sale"/>
+            <field name="name">waiting_mgr_approval</field>
+            <field name="kind">function</field>
+            <field name="action">action_mgr_approve()</field>
+        </record>
+        <record id="waiting_exec_approval_state" model="workflow.activity">
+            <field name="wkf_id" ref="sale.wkf_sale"/>
+            <field name="name">waiting_exec_approval</field>
+            <field name="kind">function</field>
+            <field name="action">action_exec_approve()</field>
+        </record>
+
+        <!-- Create the transitions -->
+        <!-- from draft to the exec approval state -->
+        <record id="trans_draft_to_exec_approval" model="workflow.transition">
+            <field name="act_from" ref="sale.act_draft"/>
+            <field name="act_to" ref="waiting_exec_approval_state"/>
+            <field name="signal">signal_exec_approval_state_forward</field>
+        </record>
+
+        <!-- from exec approval to quotation sent -->
+        <record id="trans_exec_approval_to_sent" model="workflow.transition">
+            <field name="act_from" ref="waiting_exec_approval_state"/>
+            <field name="act_to" ref="sale.act_sent"/>
+            <field name="signal">signal_quotation_sent</field>
+        </record>
+
+        <!-- from exec approval to mgr approval -->
+        <record id="trans_exec_approval_to_mgr_approval" model="workflow.transition">
+            <field name="act_from" ref="waiting_exec_approval_state"/>
+            <field name="act_to" ref="waiting_mgr_approval_state"/>
+            <field name="signal">signal_exec_approval_to_mgr_approval_forward</field>
+        </record>
+
+        <!-- from mgr approval to quotation sent -->
+        <record id="trans_mgr_approval_to_sent" model="workflow.transition">
+            <field name="act_from" ref="waiting_mgr_approval_state"/>
+            <field name="act_to" ref="sale.act_sent"/>
+            <field name="signal">signal_quotation_sent</field>
+        </record>
+
+
+    </data>
+</openerp>
