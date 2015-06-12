@@ -32,7 +32,7 @@ class sale_order_limit(models.Model):
 
         available_credit = self.partner_id.credit_limit - self.partner_id.credit - order_outstanding - draft_invoice_outstanding
         if self.amount_total > available_credit:
-            msg = "The Order total of this order is greater than the available credit limit of %s to %s. Please revise the quote" % (available_credit, self.partner_id.name)
+            msg = "The Order total of this order is greater than the available credit limit of %s to %s. Please revise the quote" % (self.partner_id.credit_limit, self.partner_id.name)
             raise Warning(msg)
             return False
         return True
