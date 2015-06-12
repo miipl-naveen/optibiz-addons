@@ -13,12 +13,14 @@ class optibiz_saleorder(osv.osv):
 
     @api.multi
     def _amount_all(self, field_name, args):
+        price_list = self.partner_id.property_product_pricelist.id
         res = super(optibiz_saleorder, self)._amount_all(field_name, args)
-        print self.env.uid
+        if price_list != 1:
+            return res
         logged_in = self.pool.get('res.users').browse(self.env.cr, self.env.uid, self.env.context['uid'], self.env.context)
         cr = self.env.cr
         uid = logged_in.id
-        option = -1;
+        option = -1
         sp = self.pool.get('res.users').has_group(cr,uid,'miipl_msp.group_sell_on_selling_price')
         msp = self.pool.get('res.users').has_group(cr,uid,'miipl_msp.group_sell_on_minimum_selling_price')
         csp = self.pool.get('res.users').has_group(cr,uid,'miipl_msp.group_sell_on_coordinator_selling_price')
