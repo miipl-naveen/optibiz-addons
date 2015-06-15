@@ -7,8 +7,8 @@ class sale_order_limit(models.Model):
 
     @api.one
     def action_wait(self):
-        self.check_limit()
-        # raise Warning("Action wait is called")
+        result = self.check_limit()
+        return result and super(sale_order_limit, self).action_wait()
 
     @api.one
     def check_limit(self):
@@ -34,5 +34,5 @@ class sale_order_limit(models.Model):
         if self.amount_total > available_credit:
             msg = "The Order total of this order is greater than the available credit limit of %s to %s. Please revise the quote" % (self.partner_id.credit_limit, self.partner_id.name)
             raise Warning(msg)
-            return False
+        # raise Warning("Hello...")
         return True

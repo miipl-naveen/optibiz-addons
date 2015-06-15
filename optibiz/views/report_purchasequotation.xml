@@ -39,7 +39,11 @@
                 <tbody>
                     <tr t-foreach="o.order_line" t-as="order_line">
                         <td>
-                            <span t-field="order_line.name"/>
+                            <strong><span t-field="order_line.product_id.name"/></strong><br/>
+                            <span t-field="order_line.name"/><br/>
+                            <span t-foreach="order_line.product_id.attribute_value_ids" t-as="attr">
+                                <span t-field="attr.attribute_id.name"></span>: <strong><span t-field="attr.name"></span></strong><br/>
+                            </span>
                         </td>
                         <td class="text-center">
                             <span t-field="order_line.date_planned"/>

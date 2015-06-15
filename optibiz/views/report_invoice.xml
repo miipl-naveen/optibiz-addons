@@ -59,7 +59,13 @@
                 </thead>
                 <tbody class="invoice_tbody">
                     <tr t-foreach="o.invoice_line" t-as="l">
-                        <td><span t-field="l.name"/></td>
+                        <td>
+                            <strong><span t-field="l.product_id.name"/></strong><br/>
+                            <span t-field="l.name"/><br/>
+                            <span t-foreach="l.product_id.attribute_value_ids" t-as="attr">
+                                <span t-field="attr.attribute_id.name"></span>: <strong><span t-field="attr.name"></span></strong><br/>
+                            </span>
+                        </td>
                         <td>
                             <span t-field="l.quantity"/>
                             <span t-field="l.uos_id"  groups="product.group_uom"/>

@@ -62,7 +62,11 @@
                 <tbody>
                     <tr t-foreach="o.order_line" t-as="line">
                         <td>
-                            <span t-field="line.name"/>
+                            <strong><span t-field="line.product_id.name"/></strong><br/>
+                            <span t-field="line.name"/><br/>
+                            <span t-foreach="line.product_id.attribute_value_ids" t-as="attr">
+                                <span t-field="attr.attribute_id.name"></span>: <strong><span t-field="attr.name"></span></strong><br/>
+                            </span>
                         </td>
                         <td>
                             <span t-esc="', '.join(map(lambda x: x.name, line.taxes_id))"/>
