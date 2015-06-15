@@ -1,4 +1,4 @@
-from openerp import models, api
+from openerp import models, api, osv
 from openerp.exceptions import Warning
 
 
@@ -36,3 +36,6 @@ class sale_order_limit(models.Model):
             raise Warning(msg)
         # raise Warning("Hello...")
         return True
+
+# sale_order_line_empty_name()
+
