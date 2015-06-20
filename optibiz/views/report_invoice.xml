@@ -61,6 +61,7 @@
                     <tr t-foreach="o.invoice_line" t-as="l">
                         <td>
                             <strong><span t-field="l.product_id.name"/></strong><br/>
+                            Serial #: <strong><span t-field="l.move.lot_ids.name"/></strong>
                             <span t-field="l.name"/><br/>
                             <span t-foreach="l.product_id.attribute_value_ids" t-as="attr">
                                 <span t-field="attr.attribute_id.name"></span>: <strong><span t-field="attr.name"></span></strong><br/>
