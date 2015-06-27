@@ -113,7 +113,7 @@
                                 <td>
                                     <strong><span t-field="l.product_id.name"/></strong><br/>
                                     <span t-field="l.name"/><br/>
-                                    <span t-foreach="l.product_id.attribute_value_ids.sorted(key=id,reverse=False)" t-as="attr">
+                                    <span t-foreach="l.product_id.attribute_value_ids.sorted(key=id,reverse=True)" t-as="attr">
                                         <span t-field="attr.attribute_id.name"></span>: <strong><span t-field="attr.name"></span></strong><br/>
                                     </span>
                                     <!--<span t-esc="', '.join(map(lambda x: x.name, l.product_id.attribute_value_ids))"/>-->
