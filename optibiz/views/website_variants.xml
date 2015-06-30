@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <template id="website_sale.variants">
+
+        </template>
+        <template id="website_sale.product_attributes" inherit_id="website_sale.product" customize_show="True"
+                  name="Product attributes">
+            <xpath expr="//p[@t-field='product.description_sale']" position="after">
+                <hr t-if="sum([(1 if len(l.value_ids)==1 else 0) for l in product.attribute_line_ids])"/>
+                <t class="text-muted">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th colspan="2" style="text-align: center">Features</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="product.attribute_line_ids" t-as="variant_id">
+                                <tr>
+                                    <th><span t-field="variant_id.attribute_id"/></th>
+                                    <td><span t-field="variant_id.value_ids[0].name"/></td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </t>
+            </xpath>
+        </template>
+    </data>
+</openerp>

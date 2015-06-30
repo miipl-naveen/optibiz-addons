@@ -20,7 +20,7 @@
     'version': '0.5',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','sale'],
+    'depends': ['base', 'sale', 'website_sale'],
 
     # always loaded
     'data': [
@@ -32,7 +32,8 @@
         'views/report_saleorder.xml',
         'views/report_invoice.xml',
         'views/report_purchaseorder.xml',
-        'views/report_purchasequotation.xml'
+        'views/report_purchasequotation.xml',
+        'views/website_variants.xml'
 
     ],
     # only loaded in demonstration mode
