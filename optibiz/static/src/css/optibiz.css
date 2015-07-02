@@ -6,6 +6,6 @@ main .container {
     margin-top: 40px;
 }
 
-footer .container {
+footer .mt16 {
   display: none;
 }
