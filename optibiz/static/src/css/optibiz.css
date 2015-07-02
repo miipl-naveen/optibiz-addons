@@ -5,3 +5,7 @@ header a.navbar-brand img {
 main .container {
     margin-top: 40px;
 }
+
+footer .container {
+  display: none;
+}
