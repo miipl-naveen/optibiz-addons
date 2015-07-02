@@ -1,9 +1,13 @@
 header a.navbar-brand img {
-    max-height: 100px !important;
+    max-height: 75px !important;
 }
 
 main .container {
-    margin-top: 40px;
+    margin-top: 20px;
+}
+
+main #product_detail {
+   margin-top: 50px !important;
 }
 
 footer .mt16 {
