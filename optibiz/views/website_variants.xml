@@ -172,7 +172,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            <div class="col-lg-3 col-sm-3 hide">
+                            <div class="col-lg-3 col-sm-3">
                                 <t t-foreach="acquirers or []" t-as="acquirer">
                                     <div t-att-data-id="acquirer.id" class="oe_sale_acquirer_button hidden pull-right">
                                         <div t-raw="acquirer.button"/>
