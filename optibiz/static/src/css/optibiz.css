@@ -1,0 +1,7 @@
+header a.navbar-brand img {
+    max-height: 100px !important;
+}
+
+main .container {
+    margin-top: 20px;
+}
