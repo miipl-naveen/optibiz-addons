@@ -39,4 +39,5 @@
     # only loaded in demonstration mode
     'demo': [
     ],
+    'css': ['static/src/css/optibiz.css'],
 }

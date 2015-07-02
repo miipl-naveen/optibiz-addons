@@ -3,7 +3,7 @@ header a.navbar-brand img {
 }
 
 main .container {
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 main #product_detail {
@@ -13,3 +13,5 @@ main #product_detail {
 footer .mt16 {
   display: none;
 }
+
+
