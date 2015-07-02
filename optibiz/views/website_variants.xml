@@ -44,7 +44,7 @@
                 </t>
             </xpath>
         </template>
-        <template id="website.payment">
+        <template id="website_sale.payment">
             <t t-call="website.layout">
                 <t t-set="additional_title">Shop - Select Payment Modess</t>
                 <div id="wrap">
