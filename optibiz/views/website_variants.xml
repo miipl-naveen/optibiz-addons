@@ -14,7 +14,8 @@
         </template>
 
         <template id="website_sale.variants">
-
+            
+            <strong>Quantity: </strong> <span><t t-esc="'{0:,.0f}'.format(int(product.qty_available))" /></span>
         </template>
         <template id="website_sale.product_attributes" inherit_id="website_sale.product" customize_show="True"
                   name="Product attributes">
@@ -45,7 +46,7 @@
         </template>
         <template id="website_sale.payment">
             <t t-call="website.layout">
-                <t t-set="additional_title">Shop - Select Payment Modess</t>
+                <t t-set="additional_title">Shop - Select Payment Modes</t>
                 <div id="wrap">
                     <div class="container oe_website_sale">
 
