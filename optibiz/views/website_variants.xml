@@ -14,8 +14,9 @@
         </template>
 
         <template id="website_sale.variants">
-            
+            <span t-if="not user_id.partner_id.name == 'Public user'">
             <strong>Quantity: </strong> <span><t t-esc="'{0:,.0f}'.format(int(product.qty_available))" /></span>
+            </span>
         </template>
         <template id="website_sale.product_attributes" inherit_id="website_sale.product" customize_show="True"
                   name="Product attributes">
