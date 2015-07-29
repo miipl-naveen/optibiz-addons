@@ -58,7 +58,7 @@
                     </tr>
                 </thead>
                 <tbody class="invoice_tbody">
-                    <tr t-foreach="o.invoice_line" t-as="l">
+                    <tr t-foreach="o.invoice_line" t-as="l" style="page-break-inside: avoid !important;">
                         <td>
                             <strong><span t-field="l.product_id.name"/></strong><br/>
                             <span t-if="'move' in l.fields_get()">

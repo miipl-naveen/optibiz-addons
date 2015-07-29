@@ -37,7 +37,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr t-foreach="o.order_line" t-as="order_line">
+                    <tr t-foreach="o.order_line" t-as="order_line" style="page-break-inside: avoid !important;">
                         <td>
                             <strong><span t-field="order_line.product_id.name"/></strong><br/>
                             <span t-field="order_line.name"/><br/>
