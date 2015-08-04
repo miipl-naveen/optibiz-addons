@@ -14,3 +14,12 @@ class purchase_order(osv.Model):
 	_defaults = {
 		'notes': lambda self, cr, uid, context: self.pool.get('res.users').browse(cr, uid, uid, context=context).company_id.purchase_note,
 	}
+
+class purchase_requisition(osv.Model):
+	_inherit = "purchase.requisition"
+	_columns = {
+		'description': fields.text('Description', required=True)
+	}
+	_defaults = {
+		'description': lambda self, cr, uid, context: self.pool.get('res.users').browse(cr, uid, uid, context=context).company_id.purchase_note,
+	}
