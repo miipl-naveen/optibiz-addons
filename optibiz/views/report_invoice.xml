@@ -4,13 +4,34 @@
 <template id="account.report_invoice_document">
     <t t-call="optibiz.external_layout">
         <div class="page">
-            <div class="row">
-                <div class="col-xs-5 col-xs-offset-7">
-                    <address t-field="o.partner_id"
-                        t-field-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": true}' />
-                    <span t-if="o.partner_id.vat">VAT: <span t-field="o.partner_id.vat"/></span>
-                </div>
-            </div>
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <strong>Customer</strong>
+                            <div t-field="o.partner_id"
+                                 t-field-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": true}'/>
+                            <p t-if="o.partner_id.vat">VAT:
+                                <span t-field="o.partner_id.vat"/>
+                            </p>
+                        </div>
+                        <div class="col-xs-4">
+                            <strong>Invoice</strong>
+                            <div t-field="o.sale_ids.partner_invoice_id"
+                                 t-field-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": true}'/>
+                            <p t-if="o.partner_id.vat">VAT:
+                                <span t-field="o.partner_id.vat"/>
+                            </p>
+                        </div>
+                        <div class="col-xs-4">
+                            <strong>Shipping</strong>
+                            <div t-field="o.sale_ids.partner_shipping_id"
+                                 t-field-options='{"widget": "contact", "fields": ["address", "name", "phone", "fax"], "no_marker": true}'/>
+                            <p t-if="o.partner_id.vat">VAT:
+                                <span t-field="o.partner_id.vat"/>
+                            </p>
+                            <p>LandMark: <span t-field="o.partner_id.landmark"></span></p>
+
+                        </div>
+                    </div>
 
             <h2>
                 <span t-if="o.type == 'out_invoice' and (o.state == 'open' or o.state == 'paid')">Invoice</span>
@@ -32,9 +53,10 @@
                     <strong>Invoice Date:</strong>
                     <p t-field="o.date_invoice"/>
                 </div>
-                <div class="col-xs-2" t-if="o.origin">
-                    <strong>Source:</strong>
-                    <p t-field="o.origin"/>
+                <div class="col-xs-3" t-if="o.origin">
+                    <strong>Source:</strong><br/>                 
+                    <span t-field="o.sale_ids.name"/><br/>
+                    (<span t-field="o.origin"/>)
                 </div>
                 <div class="col-xs-2" t-if="o.partner_id.ref">
                     <strong>Customer Code:</strong>
@@ -45,7 +67,27 @@
                     <p t-field="o.reference"/>
                 </div>
             </div>
-
+           <div class="row mt16 mb16" id="informations">
+                <div t-if="o.sale_ids.date_order" class="col-xs-2">
+                    <strong t-if="o.sale_ids.state not in ['draft','sent']">Date Ordered:</strong>
+                    <strong t-if="o.sale_ids.state in ['draft','sent']">Quotation Date:</strong>
+                    <p t-field="o.sale_ids.date_order" t-field-options='{"format": "d MMMM y"}'/>
+                </div>
+                <div t-if="o.sale_ids.user_id.name" class="col-xs-6">
+                    <strong>Salesperson:</strong>
+                    <p>
+                        <span t-field="o.sale_ids.user_id.name"/>
+                        <span>|</span>
+                        <span t-field="o.sale_ids.user_id.email"/>
+                        <span>|</span>
+                        <span t-field="o.sale_ids.user_id.mobile"/>
+                    </p>
+                </div>
+                <div t-if="o.sale_ids.payment_term" class="col-xs-3">
+                    <strong>Payment Term:</strong>
+                    <p t-field="o.sale_ids.payment_term"/>
+                </div>
+            </div>
             <table class="table table-condensed">
                 <thead>
                     <tr>
@@ -61,15 +103,15 @@
                     <tr t-foreach="o.invoice_line" t-as="l" style="page-break-inside: avoid !important;">
                         <td>
                             <strong><span t-field="l.product_id.name"/></strong><br/>
-                            <span t-if="'move' in l.fields_get()">
-                                <p t-foreach="l.move.lot_ids" t-as="lot">
-                                    Serial #: <strong><span t-field="lot.name"/></strong>
-                                </p>
-                            </span>
-                            <span t-field="l.name"/><br/>
+                            <span t-field="l.name" t-if="l.name is not ''"><br/></span>                        
                             <span t-foreach="l.product_id.attribute_value_ids" t-as="attr">
                                 <span t-field="attr.attribute_id.name"></span>: <strong><span t-field="attr.name"></span></strong><br/>
                             </span>
+                            <span t-if="'move' in l.fields_get()">
+                                <span t-foreach="l.move.lot_ids" t-as="lot" style="page-break-inside: avoid !important;">
+                                    Serial #: <strong><span t-field="lot.name"/></strong><br/>
+                                </span>
+                            </span>                                
                         </td>
                         <td>
                             <span t-field="l.quantity"/>
