@@ -189,7 +189,7 @@
         <body class="container" onload="subst()">
                         <div class="watermark"
                          style="position:fixed;opacity:0.25;font-size:3em;width:100%;text-align:right;top:180px;right:20px;z-index:1000;">
-                        <img src="http://mycompherals.com/skin/frontend/default/galaelectronues/images/m_log.png"/>
+                        <img src="http://i.imgur.com/7p0TrbO.png"/>
                     </div>
             <t t-raw="body"/>
 
