@@ -1,4 +1,4 @@
-from openerp.osv import fields, osv
+from openerp.osv import osv,fields
 
 class res_company(osv.Model):
     _inherit = "res.company"
