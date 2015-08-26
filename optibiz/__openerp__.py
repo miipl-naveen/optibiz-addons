@@ -30,6 +30,7 @@
         'optibiz_sequence.xml',
         'views/report_header.xml',
         'views/report_saleorder.xml',
+        'views/report_stockpicking.xml',
         'views/report_invoice.xml',
         'views/report_purchaseorder.xml',
         'views/report_purchasequotation.xml',
