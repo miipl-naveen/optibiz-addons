@@ -56,9 +56,10 @@ class product_price_validation(osv.osv):
 
         d1 = date.today()
         d2 = datetime.strptime(product_obj.sale_price_last_modified, '%Y-%m-%d').date()
-        daysDiff = str((d2 - d1).days)
-
-        if daysDiff >= 0:
+        daysDiff = str((d1 - d2).days)
+        price_expiery_in_days=self.pool.get('stock.config.settings').browse(cr, uid, uid, context=context).product_price_expiery_in_days
+        print price_expiery_in_days,'hi',daysDiff
+        if daysDiff >= 10:
             warn_msg = _('Product price has been updated ' + daysDiff + ' days ago check with concerned person once .')
             warning_msgs += _("Product Price ! : ") + warn_msg + "\n\n"
 
@@ -110,7 +111,7 @@ class product_template(osv.osv):
             d1 = date.today()
             d2 = datetime.strptime(r.sale_price_last_modified, '%Y-%m-%d').date()
             product_expiers_in_days = str((d1 - d2).days)
-            print product_expiers_in_days
+
             res[r.id]['product_expiers_in_days']= product_expiers_in_days
 
     _columns = {
@@ -118,7 +119,6 @@ class product_template(osv.osv):
         # Vinod code
         'sale_price_last_modified': fields.date('Sale Price Last modified'),
         'cost_price_last_modified': fields.date('Cost Price Last Modified'),
-        'sale_price_expiry_days': fields.integer('Product Price Expiry in days'),
         'product_expiers_in_days': fields.function(price_expiry,string='Product price Expiers in Days '),
     }
 

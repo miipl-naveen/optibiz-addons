@@ -24,8 +24,8 @@
 
     # always loaded
     'data': ['models/product_price_validation.xml',
-         'security/ir.model.access.csv',
-        'security/miipl_product_validation_security.xml'
+         #'security/ir.model.access.csv',
+        #'security/miipl_product_validation_security.xml'
 
     ],
     # only loaded in demonstration mode
