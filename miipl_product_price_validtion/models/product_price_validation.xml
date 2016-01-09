@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="optibiz_product_template_form_view" model="ir.ui.view">
+            <field name="name">product.template.common.form</field>
+            <field name="model">product.template</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="product.product_template_form_view" />
+            <field name="arch" type="xml">
+            <xpath expr="//field[@name='list_price']" position="after">
+                <field name="sale_price_last_modified"/>
+                <field name="cost_price_last_modified"/>
+                <field name="product_expiers_in_days"/>
+            </xpath>
+            </field>
+        </record>
+        <!--
+        <record id="optibiz_product_template_tree_view" model="ir.ui.view">
+            <field name="name">product.template.product.tree</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="stock.view_stock_product_template_tree" />
+            <field name="arch" type="xml">
+                <xpath expr="//tree[@string='Product']" position="attributes">
+                    <attribute name="editable">top</attribute>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="sale_price_last_modified" />
+                    <field name="list_price"/>
+                    <field name="sale_price_expiry_days"/>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='categ_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='type']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='state']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='qty_available']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='virtual_available']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+        -->
+        <record id="view_stock_config_settings" model="ir.ui.view">
+            <field name="name">stock settings</field>
+            <field name="model">stock.config.settings</field>
+            <field name="inherit_id" ref="stock.view_stock_config_settings" />
+            <field name="arch" type="xml">
+
+                <label for="group_uos" position="after">
+                    <field name="product_price_expiery_in_days"/>
+                    <label for="product_price_expiery_in_days"/>
+                </label>
+                
+            </field>
+        </record>
+
+        <!-- It will create a tree view this allows to update the product price -->
+        <record id="optibiz_product_template_tree_view1" model="ir.ui.view">
+            <field name="name">optibiz.product.template.product.tree</field>
+            <field name="model">product.template</field>
+            <field eval="20" name="priority"/>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Product"  editable="top" create="false" edit="true" >
+                    <field name="name" readonly="1"/>
+                    <field name="sale_price_last_modified" readonly="1" />
+                    <field name="list_price"/>
+                    <field name="standard_price"/>
+                    <field name="coordinator_selling_price"/>
+                    <field name="selling_price"/>
+                    <field name="min_selling_price"/>
+                </tree>
+            </field>
+        </record>
+
+         <record model="ir.ui.view" id="optibiz_product_template_form_view1">
+            <field name="name">optibiz.product.template.product.form</field>
+            <field name="model">product.template</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="custom string" version="7.0" create="false" edit="false">
+                    <!--fields here-->
+                </form>
+            </field>
+        </record>
+
+        <record id="optibiz_product_template_action1" model="ir.actions.act_window">
+            <field name="name">Manage Cost Price</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.template</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="optibiz_product_template_tree_view1"/>
+
+            <field name="context">{ 'tree_view_ref':'optibiz_product_template_tree_view1'}</field>
+            <field name="help" type="html">
+              <p>
+                It will display the all product with prices
+              </p>
+            </field>
+        </record>
+
+        <menuitem name="Purchases"
+            id="base.menu_purchase_root1" sequence="100"/>
+
+        <menuitem name="Purchases" parent="base.menu_purchase_root1"
+            id="base.menu_purchase_root2" sequence="100"/>
+
+        <menuitem string="Manage Cost Price" action="optibiz_product_template_action1"
+            id="optibiz_menu_product_template_action"
+            parent="purchase.menu_procurement_management" sequence="29" />
+
+    </data>
+</openerp>
+
