@@ -14,7 +14,8 @@ from datetime import date
 
 class product_price_validation(osv.osv):
     _inherit = 'sale.order.line'
-
+    _name = 'sale.order.line'
+    '''
     def product_id_change_with_wh(self, cr, uid, ids, pricelist, product, qty=0,
                                   uom=False, qty_uos=0, uos=False, name='', partner_id=False,
                                   lang=False, update_tax=True, date_order=False, packaging=False, fiscal_position=False,
@@ -60,6 +61,7 @@ class product_price_validation(osv.osv):
         price_expiery_in_days=self.pool.get('stock.config.settings').browse(cr, uid, uid, context=context).product_price_expiery_in_days
         print price_expiery_in_days,'hi',daysDiff
         if daysDiff >= 10:
+            print 'hello'
             warn_msg = _('Product price has been updated ' + daysDiff + ' days ago check with concerned person once .')
             warning_msgs += _("Product Price ! : ") + warn_msg + "\n\n"
 
@@ -94,8 +96,7 @@ class product_price_validation(osv.osv):
         res.update({'warning': warning})
         return res
 
-
-product_price_validation()
+    '''
 
 
 class product_template(osv.osv):
@@ -184,27 +185,3 @@ class product_template(osv.osv):
 
 product_template()
 
-class stock_config_settings(osv.osv_memory):
-    _name = 'stock.config.settings'
-    _inherit = 'stock.config.settings'
-    _columns = {
-    'product_price_expiery_in_days': fields.integer('Product price expiers after how many days'),
-    }
-
-    _defaults = {
-        'product_price_expiery_in_days': 0
-    }
-
-    def get_default_product_price_expiery_in_days(self, cr, uid, fields, context=None):
-
-        #you can get the field content from stock_config_settings table and return it
-
-        price_expiery_in_days=self.pool.get('stock.config.settings').browse(cr, uid, uid, context=context).product_price_expiery_in_days
-        return {'product_price_expiery_in_days': price_expiery_in_days}
-
-    def set_default_product_price_expiery_in_days(self, cr, uid, ids, context=None):
-        #you can get the field content from stock_config_settings table and return it
-        config = self.browse(cr, uid, ids[0], context)
-        print config, config.product_price_expiery_in_days
-        price_expiery_in_days= config.product_price_expiery_in_days
-        self.pool.get('stock.config.settings').write(cr, uid, uid, {'product_price_expiery_in_days': price_expiery_in_days})

@@ -20,7 +20,7 @@
     'version': '0.5',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'sale', 'stock', 'website_sale'],
+    'depends': ['base', 'sale', 'stock', 'website_sale','miipl_product_price_validtion'],
 
     # always loaded
     'data': [

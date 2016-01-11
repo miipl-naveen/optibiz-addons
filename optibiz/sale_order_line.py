@@ -67,13 +67,21 @@ class sale_order_line_empty_name(osv.osv):
         res['value'].update(res_packing.get('value', {}))
         warning_msgs = res_packing.get('warning') and res_packing['warning']['message'] or ''
 
-        #vinod code
+        # code to check the product expiry date
         d1 = date.today()
-        d2 = datetime.strptime(product_obj.sale_price_last_modified, '%Y-%m-%d').date()
-        daysDiff = str((d2-d1).days)
+        d2 = datetime.strptime(product_obj.cost_price_last_modified, '%Y-%m-%d').date()
+        daysDiff = str((d1-d2).days)
+        price_expiery_in_days = 0
+        print self.pool.get('store.default.values')
+        recordslist = self.pool.get('store.default.values').search(cr, uid, [])
+        print recordslist
+        if recordslist:
+            for record in self.pool.get('store.default.values').browse(cr, uid, recordslist, context=context):
+                price_expiery_in_days = record.price_expiry_days
 
-        print daysDiff
-        if daysDiff >= 0:
+        temp= price_expiery_in_days - int(daysDiff)
+
+        if temp <= 0:
             warn_msg = _('Product price has been updated '+ daysDiff+' days ago check with concerned person once .')
             warning_msgs += _("Product Price ! : ") + warn_msg +"\n\n"
 
@@ -101,7 +109,7 @@ class sale_order_line_empty_name(osv.osv):
         #update of warning messages
         if warning_msgs:
             warning = {
-                       'title': _('Configuration Error!'),
+                       'title': _('Warning!'),
                        'message' : warning_msgs
                     }
         res.update({'warning': warning})

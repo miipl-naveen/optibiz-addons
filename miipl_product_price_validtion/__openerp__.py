@@ -24,6 +24,7 @@
 
     # always loaded
     'data': ['models/product_price_validation.xml',
+             'models/product_config.xml'
          #'security/ir.model.access.csv',
         #'security/miipl_product_validation_security.xml'
 
