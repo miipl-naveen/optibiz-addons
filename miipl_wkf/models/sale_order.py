@@ -86,11 +86,9 @@ class OptibizSaleOrder(models.Model):
 
         order_id = self.browse(cr,uid,ids,context)
         user = order_id.env.context.get('uid', False)
-        print order_id.state
         if order_id.state == 'draft' or order_id.state == 'waiting_exec_approval' or order_id.state == 'waiting_mgr_approval':
             if not user:
                 return res
-            print 'hi'
             logged_in = self.pool.get('res.users').browse(order_id.env.cr, order_id.env.uid, order_id.env.context['uid'],
                                                       order_id.env.context)
             cr = order_id.env.cr
@@ -151,6 +149,47 @@ class OptibizSaleOrder(models.Model):
             'target': 'new',
             'context': ctx,
         }
+
+    def print_quotation(self, cr, uid, ids, context=None):
+        order_id = self.browse(cr,uid,ids,context)
+        user = order_id.env.context.get('uid', False)
+        if order_id.state == 'draft' or order_id.state == 'waiting_exec_approval' or order_id.state == 'waiting_mgr_approval':
+            if not user:
+                return res
+            logged_in = self.pool.get('res.users').browse(order_id.env.cr, order_id.env.uid, order_id.env.context['uid'],
+                                                      order_id.env.context)
+            cr = order_id.env.cr
+            uid = logged_in.id
+            option = -1
+            sp = self.pool.get('res.users').has_group(cr, uid, 'miipl_msp.group_sell_on_selling_price')
+            msp = self.pool.get('res.users').has_group(cr, uid, 'miipl_msp.group_sell_on_minimum_selling_price')
+            csp = self.pool.get('res.users').has_group(cr, uid, 'miipl_msp.group_sell_on_coordinator_selling_price')
+            if msp:
+                option = 1
+            elif sp:
+                option = 0
+            elif csp:
+                option = 2
+            for order in self.browse(cr,uid,ids,context):
+                for line in order.order_line:
+                    product = line.product_id
+                    selling_price = product.lst_price
+                    if option == 1:
+                        selling_price = product.min_selling_price
+                    elif option == 0:
+                        selling_price = product.selling_price
+                    elif option == 2:
+                        selling_price = product.coordinator_selling_price
+                    if line.price_unit < selling_price:
+                        raise osv.except_osv("Error", "You can not give any discount greater than %f for %s \n You can request for for Executive/Manager approval" % (
+                            selling_price, line.name))
+
+        '''
+        This function prints the sales order and mark it as sent, so that we can see more easily the next step of the workflow
+        '''
+        assert len(ids) == 1, 'This option should only be used for a single id at a time'
+        self.signal_workflow(cr, uid, ids, 'quotation_sent')
+        return self.pool['report'].get_action(cr, uid, ids, 'sale.report_saleorder', context=context)
 
 
 class sale_order_line(osv.osv):
