@@ -81,7 +81,7 @@ class sale_order_line_empty_name(osv.osv):
 
         temp= price_expiery_in_days - int(daysDiff)
 
-        if temp <= 0:
+        if temp < 0:
             warn_msg = _('Product price has been updated '+ daysDiff+' days ago check with concerned person once .')
             warning_msgs += _("Product Price ! : ") + warn_msg +"\n\n"
 

@@ -1,5 +1,6 @@
 from openerp import api
 from openerp.osv import osv, fields
+import warnings
 from pprint import pprint
 
 
@@ -46,8 +47,7 @@ class optibiz_saleorder(osv.osv):
                 elif option == 2:
                     selling_price = product.coordinator_selling_price
                 if line.price_unit < selling_price:
-                    raise osv.except_osv("Error", "You can not give any discount greater than %f for %s" % (
-                        selling_price, line.name))
+                    warnings.warn("Warning...........Message")
         return res
 
 

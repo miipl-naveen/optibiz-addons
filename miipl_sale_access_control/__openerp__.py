@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "miipl_wkf",
+    'name': "miipl_sale_access_control",
 
     'summary': """
-        Implementation for the approval work flow for MIIPL sales order.
+        This module will allow to create new access role 'Sales Team Lead'
         """,
 
     'description': """
-        This module adds workflows and transitions for approval of sales order and quotation within MIIPL
+        This module will allow to create new access role 'Sales Team Lead'
     """,
 
-    'author': "Optibiz India",
+    'author': "Optibiz",
     'website': "http://www.optibiz.in",
 
     # Categories can be used to filter modules in modules listing
@@ -20,14 +20,13 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'miipl_msp','sale','crm','miipl_sale_access_control'],
+    'depends': ['base','product','sale','stock','crm'],
 
     # always loaded
     'data': [
-        #'security/sale_security.xml',
-         #'security/ir.model.access.csv',
-        'workflows/flows.xml',
-        'views/sale_order_view.xml',
+         'security/ir.model.access.csv',
+        'security/sale_security.xml'
+
     ],
     # only loaded in demonstration mode
     'demo': [

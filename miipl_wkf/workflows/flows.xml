@@ -43,6 +43,12 @@
             <field name="signal">signal_quotation_sent</field>
         </record>
 
+        <!--<record id="trans_exec_approval_to_mgr_approval" model="workflow.transition">
+            <field name="act_from" ref="waiting_exec_approval_state"/>
+            <field name="act_to" ref="waiting_mgr_approval_state"/>
+            <field name="signal">signal_exec_approval_to_approved</field>
+        </record>-->
+
 
     </data>
 </openerp>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <openerp>
+	<data>
+        <record id = "sale_team_lead" model="res.groups">
+			<field name="name">See My Team Leads</field>
+			<field name="category_id" ref="base.module_category_sales_management"/>
+		</record>
+
+     </data>
+
+    <data noupdate="1">
+        <record id="crm_personal_customer_lead_rule" model="ir.rule">
+            <field name="name">My Customers</field>
+            <field ref="sale.model_res_partner" name="model_id"/>
+            <field name="domain_force"> ['|',('user_id','=',user.id),('user_id','=',False)] </field>
+            <field name="groups" eval="[(4, ref('base.group_sale_salesman'))]"/>
+        </record>
+
+        <record id="crm_all_customer_lead_rule" model="ir.rule">
+            <field name="name">All Customers</field>
+            <field ref="sale.model_res_partner" name="model_id"/>
+            <field name="domain_force"> [(1,'=',1)] </field>
+            <field name="groups" eval="[(4, ref('base.group_sale_salesman_all_leads')),(4,ref('base.group_sale_manager'))]"/>
+        </record>
+
+        <record id="sale_order_line_team_lead_rule" model="ir.rule">
+            <field name="name">My Team Sale Order Lines </field>
+            <field ref="sale.model_sale_order_line" name="model_id"/>
+            <field name="domain_force">['|','|','|',('order_id.user_id','=',user.id),('order_id.user_id','=',False),('order_id.section_id.member_ids','in', [user.id]),('order_id.section_id.user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('sale_team_lead') )]"/>
+        </record>
+
+        <record id="sale_order_team_lead_rule" model="ir.rule">
+            <field name="name">My Team Quotations</field>
+            <field ref="sale.model_sale_order" name="model_id"/>
+            <field name="domain_force">['|','|','|',('user_id','=',user.id),('user_id','=',False),('section_id.member_ids','in', [user.id]),('section_id.user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('sale_team_lead'))]"/>
+        </record>
+        <record id="res_partner_team_lead_rule" model="ir.rule">
+            <field name="name">My Team Customer</field>
+            <field ref="sale.model_res_partner" name="model_id"/>
+            <field name="domain_force"> ['|','|','|',('user_id','=',user.id),('user_id','=',False),('section_id.member_ids','in', [user.id]),('section_id.user_id','=',user.id)] </field>
+            <field name="groups" eval="[(4, ref('sale_team_lead'))]"/>
+        </record>
+        <record id="crm_lead_line_team_lead_rule" model="ir.rule">
+            <field name="name">My Team Leads</field>
+            <field ref="crm.model_crm_lead" name="model_id"/>
+            <field name="domain_force">['|','|','|',('user_id','=',user.id),('user_id','=',False),('section_id.member_ids','in', [user.id]),('section_id.user_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('sale_team_lead'))]"/>
+        </record>
+
+
+
+    </data>
+    </openerp>
