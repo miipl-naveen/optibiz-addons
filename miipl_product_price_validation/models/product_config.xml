@@ -3,13 +3,13 @@
     <data>
 
         <record id="view_stock_config_settings" model="ir.ui.view">
-            <field name="name">stock settings</field>
-            <field name="model">stock.config.settings</field>
-            <field name="inherit_id" ref="stock.view_stock_config_settings" />
+            <field name="name">sale settings</field>
+            <field name="model">sale.config.settings</field>
+            <field name="inherit_id" ref="sale.view_sales_config" />
             <field name="arch" type="xml">
 
-                <xpath expr="//form/group[last()-1]/div/div[last()]" position="inside">
-
+                <!--<xpath expr="//form/group[last()-1]/div/div[last()]" position="inside">-->
+                <xpath expr="//group[@name='Product Features']/div/div" position="after">
                     <div>
                         <label for="product_price_expiry_in_days"/>
                         <field name="product_price_expiry_in_days" class="oe_inline"/> Days

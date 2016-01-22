@@ -12,15 +12,15 @@
 
                  <xpath expr="/form/header" position="replace">
                      <header>
-                        <button name="invoice_recreate" states="invoice_except" string="Recreate Invoice" groups="base.group_user"/>
-                        <button name="invoice_corrected" states="invoice_except" string="Ignore Exception" groups="base.group_user"/>
+                         <button name="invoice_recreate" states="invoice_except" string="Recreate Invoice" groups="base.group_user"/>
+                         <button name="invoice_corrected" states="invoice_except" string="Ignore Exception" groups="base.group_user"/>
                         <button name="action_quotation_send" string="Send by Email" type="object" states="draft,quote_approved" class="oe_highlight" groups="base.group_user"/>
-                        <button name="action_quotation_send" string="Send by Email" type="object" states="sent,quote_approved,progress,manual" />
-                        <button name="print_quotation" string="Print" type="object" states="draft" class="oe_highlight" groups="base.group_user"/>
-                        <button name="print_quotation" string="Print" type="object" states="sent,quote_approved,progress,manual" groups="base.group_user"/>
-                        <button string="Request Executive Approval" type="workflow" name="signal_exec_approval_state_forward" states="draft" class="oe_highlight" groups="miipl_msp.group_sell_on_coordinator_selling_price"/>
-                          <button string="Mark as sent" type="workflow" name="signal_quotation_sent" states="draft,waiting_exec_approval,waiting_mgr_approval" class="oe_highlight"/>
-                          <button string="Request Manager Approval" type="workflow" name="signal_exec_approval_to_mgr_approval_forward" states="waiting_exec_approval" class="oe_highlight" groups="miipl_msp.group_sell_on_selling_price,miipl_sale_access_control.sale_team_lead"/>
+                        <button name="action_quotation_send" string="Send by Email" type="object" states="sent,progress,manual" />
+                        <button name="print_quotation" string="Print" type="object" states="draft,quote_approved" class="oe_highlight" groups="base.group_user"/>
+                        <button name="print_quotation" string="Print" type="object" states="sent,progress,manual" groups="base.group_user"/>
+                        <button string="Request Executive Approval" type="object" name="action_exec_approve" states="draft" class="oe_highlight" groups="base.group_sale_salesman"/>
+                        <!-- <button string="Mark as sent" type="workflow" name="signal_quotation_sent" states="draft,waiting_exec_approval,waiting_mgr_approval" class="oe_highlight"/>-->
+                          <button string="Request Manager Approval" type="object" name="action_mgr_approve" states="waiting_exec_approval" class="oe_highlight" groups="miipl_msp.group_sell_on_selling_price,miipl_sale_access_control.sale_team_lead"/>
                         <button string="Approve Quote" type="object" name="action_quote_approve" states="waiting_exec_approval,waiting_mgr_approval" groups="miipl_sale_access_control.sale_team_lead,base.group_sale_manager"/>
                         <button string="Reject Quote" type="object" name="action_quote_reject" states="waiting_exec_approval,waiting_mgr_approval" groups="miipl_sale_access_control.sale_team_lead,base.group_sale_manager"/>
                          <button name="action_button_confirm" states="sent" string="Confirm Sale" class="oe_highlight" type="object" groups="base.group_user"/>

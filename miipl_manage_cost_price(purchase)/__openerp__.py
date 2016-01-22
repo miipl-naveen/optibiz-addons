@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "miipl_po_so_date",
+    'name': "miipl_manage_product_price(Purchase)",
 
     'summary': """
-        This module will make purchase order date as current date
+        This module will allow to check the last modification product price
         """,
 
     'description': """
-        This module will make purchase order date as current date
+        This module will allow to check the last modification product price
     """,
 
     'author': "Optibiz",
@@ -20,11 +20,13 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','sale','purchase_requisition'],
+    'depends': ['base','product','miipl_product_price_validation','sale','purchase'],
 
     # always loaded
-    'data': [
-        # 'security/ir.model.access.csv',
+    'data': ['models/manage_product_price.xml',
+
+         #'security/ir.model.access.csv',
+        #'security/miipl_product_validation_security.xml'
 
     ],
     # only loaded in demonstration mode

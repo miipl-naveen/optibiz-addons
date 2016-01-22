@@ -15,7 +15,6 @@ from datetime import date
 class sale_order_line_empty_name(osv.osv):
     _inherit = 'sale.order.line'
 
-
     def product_id_change(self, cr, uid, ids, pricelist, product, qty=0,
                           uom=False, qty_uos=0, uos=False, name='', partner_id=False,
                           lang=False, update_tax=True, date_order=False, packaging=False, fiscal_position=False,
@@ -25,6 +24,31 @@ class sale_order_line_empty_name(osv.osv):
                                                                   partner_id, lang, update_tax,
                                                                   date_order, packaging, fiscal_position, flag=True,
                                                                   context=context)
+        '''product_obj = self.pool.get('product.product').browse(cr,uid,product,context)
+        print product_obj
+        d1 = date.today()
+        d2 = datetime.strptime(product_obj.cost_price_last_modified, '%Y-%m-%d').date()
+        daysDiff = str((d1-d2).days)
+        price_expiery_in_days = 0
+        recordslist = self.pool.get('store.default.values').search(cr, uid, [])
+        if recordslist:
+            for record in self.pool.get('store.default.values').browse(cr, uid, recordslist, context=context):
+                price_expiery_in_days = record.price_expiry_days
+        print price_expiery_in_days, int(daysDiff)
+        temp = int(daysDiff) - price_expiery_in_days
+        warning_msgs =''
+        if temp > 0:
+            warn_msg = _('Product price has been updated '+ daysDiff+' days ago check with concerned person once .')
+            warning_msgs += _("Product Price ! : ") + warn_msg +"\n\n"
+        warning={}
+        if warning_msgs:
+            warning = {
+                       'title': _('Warning!'),
+                       'message' : warning_msgs
+                    }
+        result.update({'warning': warning})'''
+
+
         result['value']['name'] = ' '
         return result
 
@@ -79,9 +103,10 @@ class sale_order_line_empty_name(osv.osv):
             for record in self.pool.get('store.default.values').browse(cr, uid, recordslist, context=context):
                 price_expiery_in_days = record.price_expiry_days
 
-        temp= price_expiery_in_days - int(daysDiff)
+        temp = int(daysDiff) - price_expiery_in_days
 
-        if temp < 0:
+        print price_expiery_in_days,int(daysDiff)
+        if temp > 0:
             warn_msg = _('Product price has been updated '+ daysDiff+' days ago check with concerned person once .')
             warning_msgs += _("Product Price ! : ") + warn_msg +"\n\n"
 

@@ -20,12 +20,12 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','product','sale','stock'],
+    'depends': ['base','product','sale'],
 
     # always loaded
     'data': ['models/product_price_validation.xml',
-             'models/product_config.xml'
-         #'security/ir.model.access.csv',
+             'models/product_config.xml',
+         'security/ir.model.access.csv',
         #'security/miipl_product_validation_security.xml'
 
     ],

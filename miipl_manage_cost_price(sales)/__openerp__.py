@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "miipl_sale_access_control",
+    'name': "miipl_manage_product_price(sale)",
 
     'summary': """
-        This module will allow to create new access role 'Sales Team Lead'
+        This module will allow to check the last modification product price
         """,
 
     'description': """
-        This module will allow to create new access role 'Sales Team Lead'
+        This module will allow to check the last modification product price
     """,
 
     'author': "Optibiz",
@@ -20,12 +20,13 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','product','sale','crm'],
+    'depends': ['base','product','miipl_product_price_validation','sale'],
 
     # always loaded
-    'data': [
+    'data': ['models/manage_product_price.xml',
+
          #'security/ir.model.access.csv',
-        'security/sale_security.xml'
+        #'security/miipl_product_validation_security.xml'
 
     ],
     # only loaded in demonstration mode

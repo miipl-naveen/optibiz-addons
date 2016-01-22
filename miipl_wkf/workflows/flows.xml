@@ -43,6 +43,12 @@
             <field name="signal">signal_quotation_sent</field>
         </record>
 
+        <!--<record id="trans_exec_approval_to_sent" model="workflow.transition">
+            <field name="act_from" ref="quote_approved"/>
+            <field name="act_to" ref="sale.act_sent"/>
+            <field name="signal">signal_approved_quote_sent</field>
+        </record>-->
+
         <!--<record id="trans_exec_approval_to_mgr_approval" model="workflow.transition">
             <field name="act_from" ref="waiting_exec_approval_state"/>
             <field name="act_to" ref="waiting_mgr_approval_state"/>

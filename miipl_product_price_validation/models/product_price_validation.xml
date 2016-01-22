@@ -103,9 +103,6 @@
             <field name="name">Product Price Expiery</field>
         </record>
 
-        <menuitem string="Manage Cost Price" action="optibiz_product_template_action1"
-            id="optibiz_menu_product_template_action"
-            parent="purchase.menu_procurement_management" sequence="29" />
 
     </data>
 </openerp>

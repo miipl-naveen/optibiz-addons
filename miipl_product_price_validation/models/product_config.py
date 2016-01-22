@@ -14,9 +14,9 @@ class store_default_values(osv.osv):
 
 store_default_values()
 
-class stock_config_settings(osv.osv_memory):
-    _name = 'stock.config.settings'
-    _inherit = 'stock.config.settings'
+class sale_config_settings(osv.osv_memory):
+    _name = 'sale.config.settings'
+    _inherit = 'sale.config.settings'
     _columns = {
     'product_price_expiry_in_days': fields.integer('Product price expires in ',default=10),
     }
@@ -27,20 +27,19 @@ class stock_config_settings(osv.osv_memory):
 
     def get_default_product_price_expiry_in_days(self, cr, uid, fields, context=None):
 
-        price_expiery_in_days = 0
+        price_expiry_in_days = 0
         idlist=self.pool.get('store.default.values').search(cr, uid, [], context=context)
         print idlist,len(idlist)
         if idlist:
             for record in self.pool.get('store.default.values').browse(cr, uid, idlist, context=context):
                 #print [record.id]['price_expiry_days']
-                price_expiery_in_days=record.price_expiry_days
-        if price_expiery_in_days:
-            print price_expiery_in_days
-            return {'product_price_expiry_in_days': price_expiery_in_days}
+                price_expiry_in_days=record.price_expiry_days
+        if price_expiry_in_days:
+            return {'product_price_expiry_in_days': price_expiry_in_days}
         else:
             return {'product_price_expiry_in_days': 10}
 
-    def set_default_product_price_expiery_in_days(self, cr, uid, ids, context=None):
+    def set_default_product_price_expiry_in_days(self, cr, uid, ids, context=None):
         price_expiry= self.browse(cr, uid, ids[0], context)
         Product_price_expiry=price_expiry.product_price_expiry_in_days
         print Product_price_expiry

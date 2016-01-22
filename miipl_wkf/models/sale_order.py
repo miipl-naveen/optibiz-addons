@@ -1,6 +1,8 @@
 from openerp import osv, models
 from openerp.osv import fields, osv
 import openerp.addons.decimal_precision as dp
+from datetime import datetime, timedelta
+from datetime import date
 import warnings
 
 
@@ -20,6 +22,7 @@ class OptibizSaleOrder(models.Model):
             ('waiting_date', 'Waiting Schedule'),
             ('progress', 'Sales Order'),
             ('manual', 'Sale to Invoice'),
+            ('shipping_except', 'Shipping Exception'),
             ('invoice_except', 'Invoice Exception'),
             ('done', 'Done'),
             ], 'Status', readonly=True, track_visibility='onchange',
@@ -137,6 +140,7 @@ class OptibizSaleOrder(models.Model):
             'default_use_template': bool(template_id),
             'default_template_id': template_id,
             'default_composition_mode': 'comment',
+            'state': order_id.state,
             'mark_so_as_sent': True
         })
         return {
@@ -189,6 +193,9 @@ class OptibizSaleOrder(models.Model):
         '''
         assert len(ids) == 1, 'This option should only be used for a single id at a time'
         self.signal_workflow(cr, uid, ids, 'quotation_sent')
+        #if order_id.state == 'quote_approved':
+        #    self.signal_workflow(cr,uid,ids,'signal_approved_quote_sent')
+        #    self.pool.get('sale.order').write(cr, uid, order_id.id, {'state': 'sent'})
         return self.pool['report'].get_action(cr, uid, ids, 'sale.report_saleorder', context=context)
 
 
@@ -202,6 +209,48 @@ class sale_order_line(osv.osv):
         'price_unit': fields.float('Unit Price', required=True, digits_compute= dp.get_precision('Product Price'), readonly=False),
 
     }
+
+    def product_id_change(self, cr, uid, ids, pricelist, product, qty=0,
+                          uom=False, qty_uos=0, uos=False, name='', partner_id=False,
+                          lang=False, update_tax=True, date_order=False, packaging=False, fiscal_position=False,
+                          flag=False, context=None):
+        result = super(sale_order_line, self).product_id_change(cr, uid, ids,
+                                                                  pricelist, product, qty, uom, qty_uos, uos, name,
+                                                                  partner_id, lang, update_tax,
+                                                                  date_order, packaging, fiscal_position, flag=True,context=context)
+        if product:
+            product_obj = self.pool.get('product.product').browse(cr,uid,product,context)
+            print product_obj
+            d1 = date.today()
+            if product_obj.cost_price_last_modified:
+                d2 = datetime.strptime(product_obj.cost_price_last_modified, '%Y-%m-%d').date()
+            else :
+                d2 = date.today()
+            print d2
+            daysDiff = str((d1-d2).days)
+            price_expiery_in_days = 0
+            recordslist = self.pool.get('store.default.values').search(cr, uid, [])
+            if recordslist:
+                for record in self.pool.get('store.default.values').browse(cr, uid, recordslist, context=context):
+                    price_expiery_in_days = record.price_expiry_days
+            print price_expiery_in_days, int(daysDiff)
+            temp = int(daysDiff) - price_expiery_in_days
+            warning_msgs =''
+            if 2 > 0:
+                warn_msg = ('Product price has been updated '+ daysDiff+' days ago check with concerned person once .')
+                warning_msgs += ("Product Price ! : ") + warn_msg +"\n\n"
+            warning={}
+            if warning_msgs:
+                warning = {
+                       'title': ('Warning!'),
+                       'message' : warning_msgs
+                    }
+            result.update({'warning': warning})
+
+
+        result['value']['name'] = ' '
+        return result
+
     def price_validation(self, cr, uid, ids,product_id, context=None):
 
 
@@ -235,4 +284,16 @@ class sale_order_line(osv.osv):
                         selling_price, line.name))
 
         return True
+
+class mail_compose_message(osv.Model):
+    _inherit = 'mail.compose.message'
+
+    def send_mail(self, cr, uid, ids, context=None):
+        context = context or {}
+        if context.get('default_model') == 'sale.order' and context.get('default_res_id') and context.get('mark_so_as_sent'):
+            context = dict(context, mail_post_autofollow=True)
+            self.pool.get('sale.order').signal_workflow(cr, uid, [context['default_res_id']], 'quotation_sent')
+            #if context.get('state') == 'quote_approved':
+            #   self.pool.get('sale.order').write(cr, uid, context['default_res_id'], {'state': 'sent'})
+        return super(mail_compose_message, self).send_mail(cr, uid, ids, context=context)
 

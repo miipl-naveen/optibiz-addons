@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "miipl_sale_access_control",
+    'name': "miipl_po_date",
 
     'summary': """
-        This module will allow to create new access role 'Sales Team Lead'
+        This module will make purchase order date as current date
         """,
 
     'description': """
-        This module will allow to create new access role 'Sales Team Lead'
+        This module will make purchase order date as current date
     """,
 
     'author': "Optibiz",
@@ -20,12 +20,11 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','product','sale','crm'],
+    'depends': ['base','sale'],
 
     # always loaded
     'data': [
-         #'security/ir.model.access.csv',
-        'security/sale_security.xml'
+        # 'security/ir.model.access.csv',
 
     ],
     # only loaded in demonstration mode
