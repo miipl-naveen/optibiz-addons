@@ -4,7 +4,8 @@ import openerp.addons.decimal_precision as dp
 from datetime import datetime, timedelta
 from datetime import date
 import warnings
-
+import smtplib
+from smtplib import SMTPException
 
 class OptibizSaleOrder(models.Model):
     _inherit = 'sale.order'
@@ -34,11 +35,55 @@ class OptibizSaleOrder(models.Model):
 
     def action_mgr_approve(self, cr, uid, ids, context=None):
         res = self.write(cr, uid, ids, {'state': 'waiting_mgr_approval'}, context=context)
+
         return res
 
     def action_exec_approve(self, cr, uid, ids, context=None):
-        res = self.write(cr, uid, ids, {'state': 'waiting_exec_approval'}, context=context)
-        return res
+         res = self.write(cr, uid, ids, {'state': 'waiting_exec_approval'}, context=context)
+         '''email_template_obj = self.pool.get('email.template')
+         template_ids = email_template_obj.search(cr, uid, [('model_id.model', '=','sale.order')], context=context)
+         print template_ids'''
+         '''print uid
+         team_id=self.pool.get('res.users').browse(cr,uid,uid,context).default_section_id
+         team_lead=self.pool.get('crm.case.section').browse(cr,uid,team_id.id,context).user_id
+         email_id=self.pool.get('res.users').browse(cr,uid,team_lead.id,context).login
+         print email_id
+         sender='vinod.k@madhuinfotech.com'
+         receiver=str(email_id)
+         message="You got approval request from your team member"
+         try:
+            smtpObj =  smtplib.SMTP(host='smtp.rediffmailpro.com', port=587)
+            print 'line1',smtpObj
+            #smtpObj.ehlo()
+            print 'line2'
+            #smtpObj.starttls()
+            print 'line3',message
+            #smtpObj.ehlo()
+            username=sender
+            pwd='Koushalya155'
+            smtpObj.login(user=username, password=pwd)
+            print 'line4'
+            smtpObj.sendmail(sender,receiver,message)
+            smtpObj.quit()
+            #self.state='waiting'
+            print "success"
+         except smtplib.SMTPException:
+            print "error" '''
+
+         '''if template_ids:
+              values = email_template_obj.generate_email(cr, uid, template_ids[0], ids[0], context=context)
+              """values['subject'] = subject
+              values['email_to'] = email_to
+              values['body_html'] = body_html
+              values['body'] = body_html"""
+              values['email_to'] = email_id
+              values['res_id'] = False
+              mail_mail_obj = self.pool.get('mail.mail')
+              msg_id = mail_mail_obj.create(cr, uid, values, context=context)
+              print msg_id
+              if msg_id:
+                 mail_mail_obj.send(cr, uid, [msg_id], context=context)'''
+         return True
 
     def action_quote_reject(self, cr, uid, ids, context=None):
         res = self.write(cr, uid, ids, {'state': 'cancel'}, context=context)
@@ -236,7 +281,8 @@ class sale_order_line(osv.osv):
             print price_expiery_in_days, int(daysDiff)
             temp = int(daysDiff) - price_expiery_in_days
             warning_msgs =''
-            if 2 > 0:
+            print temp , 'temp'
+            if temp > 0:
                 warn_msg = ('Product price has been updated '+ daysDiff+' days ago check with concerned person once .')
                 warning_msgs += ("Product Price ! : ") + warn_msg +"\n\n"
             warning={}
