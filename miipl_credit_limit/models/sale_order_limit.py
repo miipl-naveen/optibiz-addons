@@ -7,7 +7,6 @@ class sale_order_limit(models.Model):
 
     @api.one
     def action_wait(self):
-        print 'hi'
         result = self.check_limit()
         return result and super(sale_order_limit, self).action_wait()
 

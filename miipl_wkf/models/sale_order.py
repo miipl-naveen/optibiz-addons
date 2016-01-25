@@ -10,9 +10,13 @@ from smtplib import SMTPException
 class OptibizSaleOrder(models.Model):
     _inherit = 'sale.order'
 
+    def _get_section_id(self,cr,uid,context = None):
+        user_id = self.pool.get('res.users').browse(cr,uid,uid,context)
+        return user_id.default_section_id.id
+
     _columns = {
         'order_line': fields.one2many('sale.order.line', 'order_id', 'Order Lines', copy=True),
-
+        'section_id': fields.many2one('crm.case.section', 'Sales Team'),
         'state': fields.selection([
             ('draft', 'Draft Quotation'),
             ('waiting_exec_approval', 'Waiting Exec Approval'),
@@ -30,6 +34,8 @@ class OptibizSaleOrder(models.Model):
             help="Gives the status of the quotation or sales order. \nThe exception status is automatically set when a cancel operation occurs in the processing of a document linked to the sales order. \nThe 'Waiting Schedule' status is set when the invoice is confirmed but waiting for the scheduler to run on the order date.", select=True),
     }
 
+    _defaults = {'section_id': _get_section_id}
+
 
 
 
@@ -40,15 +46,28 @@ class OptibizSaleOrder(models.Model):
 
     def action_exec_approve(self, cr, uid, ids, context=None):
          res = self.write(cr, uid, ids, {'state': 'waiting_exec_approval'}, context=context)
+
          '''email_template_obj = self.pool.get('email.template')
          template_ids = email_template_obj.search(cr, uid, [('model_id.model', '=','sale.order')], context=context)
-         print template_ids'''
-         '''print uid
+         print template_ids
          team_id=self.pool.get('res.users').browse(cr,uid,uid,context).default_section_id
          team_lead=self.pool.get('crm.case.section').browse(cr,uid,team_id.id,context).user_id
          email_id=self.pool.get('res.users').browse(cr,uid,team_lead.id,context).login
-         print email_id
-         sender='vinod.k@madhuinfotech.com'
+         if template_ids:
+              values = email_template_obj.generate_email(cr, uid, template_ids[0], ids[0], context=context)
+              values['res_id'] = False
+              mail_mail_obj = self.pool.get('mail.mail')
+              msg_id = mail_mail_obj.create(cr, uid, values, context=context)
+              print msg_id
+              values['email_to'] = email_id
+              values['email_to'] = email_id
+              if msg_id:
+                 mail_mail_obj.send(cr, uid, [msg_id], context=context)
+              else:
+                  print 'sorry' '''
+
+
+         '''sender='vinod.k@madhuinfotech.com'
          receiver=str(email_id)
          message="You got approval request from your team member"
          try:
