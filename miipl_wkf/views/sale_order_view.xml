@@ -18,7 +18,7 @@
                         <button name="action_quotation_send" string="Send by Email" type="object" states="sent,progress,manual" />
                         <button name="print_quotation" string="Print" type="object" states="draft,quote_approved" class="oe_highlight" groups="base.group_user"/>
                         <button name="print_quotation" string="Print" type="object" states="sent,progress,manual" groups="base.group_user"/>
-                        <button string="Request Executive Approval" type="object" name="action_exec_approve" states="draft" class="oe_highlight" groups="base.group_sale_salesman"/>
+                        <button string="Request Executive Approval" type="object" name="action_exec_approve" states="draft,sent,quote_approved" class="oe_highlight" groups="base.group_sale_salesman"/>
                         <!-- <button string="Mark as sent" type="workflow" name="signal_quotation_sent" states="draft,waiting_exec_approval,waiting_mgr_approval" class="oe_highlight"/>-->
                           <button string="Request Manager Approval" type="object" name="action_mgr_approve" states="waiting_exec_approval" class="oe_highlight" groups="miipl_msp.group_sell_on_selling_price,miipl_sale_access_control.sale_team_lead"/>
                         <button string="Approve Quote" type="object" name="action_quote_approve" states="waiting_exec_approval,waiting_mgr_approval" groups="miipl_sale_access_control.sale_team_lead,base.group_sale_manager"/>
@@ -101,4 +101,6 @@
         <menuitem action="action_orders" id="sale.menu_sale_order" parent="base.menu_sales" sequence="6" groups="base.group_sale_salesman,base.group_sale_manager"/>
 
     </data>
+
+
 </openerp>

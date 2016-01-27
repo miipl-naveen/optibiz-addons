@@ -10,12 +10,45 @@ from smtplib import SMTPException
 class OptibizSaleOrder(models.Model):
     _inherit = 'sale.order'
 
+    def action_wait(self,cr,uid,ids,context):
+        print 'hi hello boss'
+        order_id = self.pool.get('sale.order').browse(cr,uid,ids,context)
+        order_id = order_id.id
+        logged_in = self.pool.get('res.users').browse(cr, uid, uid,
+                                                      context)
+        uid = logged_in.id
+        option = -1
+        sp = self.pool.get('res.users').has_group(cr, uid, 'miipl_msp.group_sell_on_selling_price')
+        msp = self.pool.get('res.users').has_group(cr, uid, 'miipl_msp.group_sell_on_minimum_selling_price')
+        csp = self.pool.get('res.users').has_group(cr, uid, 'miipl_msp.group_sell_on_coordinator_selling_price')
+        if msp:
+            option = 1
+        elif sp:
+            option = 0
+        elif csp:
+            option = 2
+        for order in self.browse(cr,uid,ids,context):
+            for line in order.order_line:
+                product = line.product_id
+                selling_price = product.lst_price
+                if option == 1:
+                    selling_price = product.min_selling_price
+                elif option == 0:
+                    selling_price = product.selling_price
+                elif option == 2:
+                    selling_price = product.coordinator_selling_price
+                if line.price_unit < selling_price:
+                    raise osv.except_osv("Error", "You can not give any discount greater than %f for %s \n You can request for executive/manager approval" % (
+                        selling_price, line.name))
+
+        return super(OptibizSaleOrder, self).action_wait(cr,uid,ids,context)
+
     def _get_section_id(self,cr,uid,context = None):
         user_id = self.pool.get('res.users').browse(cr,uid,uid,context)
         return user_id.default_section_id.id
 
     _columns = {
-        'order_line': fields.one2many('sale.order.line', 'order_id', 'Order Lines', copy=True),
+        'order_line': fields.one2many('sale.order.line', 'order_id', 'Order Lines',readonly=True, states={'draft': [('readonly', False)], 'sent': [('readonly', False)],'waiting_exec_approval': [('readonly', False)],'waiting_mgr_approval': [('readonly', False)],'quote_approved': [('readonly', False)]} ,copy=True),
         'section_id': fields.many2one('crm.case.section', 'Sales Team'),
         'state': fields.selection([
             ('draft', 'Draft Quotation'),
@@ -48,23 +81,72 @@ class OptibizSaleOrder(models.Model):
          res = self.write(cr, uid, ids, {'state': 'waiting_exec_approval'}, context=context)
 
          '''email_template_obj = self.pool.get('email.template')
-         template_ids = email_template_obj.search(cr, uid, [('model_id.model', '=','sale.order')], context=context)
+         template_ids = email_template_obj.search(cr, uid, [('model_id.model', '=','sale.order') and ('name' ,'='  ,'Send auto email')], context=context)
          print template_ids
          team_id=self.pool.get('res.users').browse(cr,uid,uid,context).default_section_id
          team_lead=self.pool.get('crm.case.section').browse(cr,uid,team_id.id,context).user_id
          email_id=self.pool.get('res.users').browse(cr,uid,team_lead.id,context).login
-         if template_ids:
+         template = self.pool.get('ir.model.data').get_object(cr, uid, 'miipl_wkf', 'email_template_project_auto')
+         mail_id = self.pool.get('email.template').send_mail(cr, uid, template_ids[0], uid , force_send=True)
+         print mail_id'''
+
+
+         order_id=self.browse(cr,uid,ids,context)
+         '''
+         This function opens a window to compose an email, with the edi sale template message loaded by default
+         '''
+         assert len(ids) == 1, 'This option should only be used for a single id at a time.'
+         ir_model_data = self.pool.get('ir.model.data')
+         try:
+            template_id = ir_model_data.get_object_reference(cr, uid,'miipl_wkf', 'email_template_project_auto')[1]
+         except ValueError:
+            template_id = False
+         try:
+            compose_form_id = ir_model_data.get_object_reference(cr, uid, 'mail', 'email_compose_message_wizard_form')[1]
+         except ValueError:
+            compose_form_id = False
+         ctx = dict()
+         ctx.update({
+            'default_model': 'sale.order',
+            'default_res_id': ids[0],
+            'default_use_template': bool(template_id),
+            'default_template_id': template_id,
+            'default_composition_mode': 'comment',
+            'state': order_id.state,
+            'mark_so_as_sent': False
+         })
+         return {
+            'type': 'ir.actions.act_window',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'res_model': 'mail.compose.message',
+            'views': [(compose_form_id, 'form')],
+            'view_id': compose_form_id,
+            'target': 'new',
+            'context': ctx,
+        }
+
+
+
+
+         '''if template_ids:
               values = email_template_obj.generate_email(cr, uid, template_ids[0], ids[0], context=context)
               values['res_id'] = False
               mail_mail_obj = self.pool.get('mail.mail')
+              print values
+              values['email_to'] = email_id
               msg_id = mail_mail_obj.create(cr, uid, values, context=context)
-              print msg_id
-              values['email_to'] = email_id
-              values['email_to'] = email_id
+              print self.pool.get('mail.mail').browse(cr,uid,msg_id,context)
+              #values['email_to'] = email_id
+              #values['email_to'] = email_id
+              #${object.section_id.user_id.id}
               if msg_id:
-                 mail_mail_obj.send(cr, uid, [msg_id], context=context)
+                 a=mail_mail_obj.send(cr, uid, [msg_id], context=context)
+                 print a
               else:
                   print 'sorry' '''
+
+
 
 
          '''sender='vinod.k@madhuinfotech.com'
@@ -102,7 +184,7 @@ class OptibizSaleOrder(models.Model):
               print msg_id
               if msg_id:
                  mail_mail_obj.send(cr, uid, [msg_id], context=context)'''
-         return True
+         #return True
 
     def action_quote_reject(self, cr, uid, ids, context=None):
         res = self.write(cr, uid, ids, {'state': 'cancel'}, context=context)
@@ -362,3 +444,20 @@ class mail_compose_message(osv.Model):
             #   self.pool.get('sale.order').write(cr, uid, context['default_res_id'], {'state': 'sent'})
         return super(mail_compose_message, self).send_mail(cr, uid, ids, context=context)
 
+class res_partner(osv.osv):
+    """ Inherits partner and adds CRM information in the partner form """
+    _inherit = 'res.partner'
+    _name = 'res.partner'
+
+    def _get_section_id(self,cr,uid,context = None):
+        print 'yes'
+        user_id = self.pool.get('res.users').browse(cr,uid,uid,context)
+        return user_id.default_section_id.id
+
+    _columns = {
+    'section_id': fields.many2one('crm.case.section', 'Sales Team 123'),
+
+    }
+
+    _defaults = {'section_id': _get_section_id}
+res_partner()

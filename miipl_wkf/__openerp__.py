@@ -28,6 +28,7 @@
          'security/ir.model.access.csv',
         'workflows/flows.xml',
         'views/sale_order_view.xml',
+        'email_template_project_auto.xml'
     ],
     # only loaded in demonstration mode
     'demo': [
