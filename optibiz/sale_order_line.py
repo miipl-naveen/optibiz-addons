@@ -94,8 +94,8 @@ class sale_order_line_empty_name(osv.osv):
         # code to check the product expiry date
         d1 = date.today()
         d2 = datetime.strptime(product_obj.price_last_modified, '%Y-%m-%d').date()
-        daysDiff = str((d1-d2).days)
-        price_expiery_in_days = 0
+        daysDiff = int(str((d1-d2).days))
+        '''price_expiery_in_days = 0
         print self.pool.get('store.default.values')
         recordslist = self.pool.get('store.default.values').search(cr, uid, [])
         print recordslist
@@ -105,9 +105,10 @@ class sale_order_line_empty_name(osv.osv):
 
         temp = int(daysDiff) - price_expiery_in_days
 
-        print price_expiery_in_days,int(daysDiff)
-        if temp > 0:
-            warn_msg = _('Product price has been updated '+ daysDiff+' days ago check with concerned person once .')
+        print price_expiery_in_days,int(daysDiff)'''
+        price_expiery_in_days = product_obj.price_expiry
+        if daysDiff >= price_expiery_in_days:
+            warn_msg = _('Product price has been updated '+ str(daysDiff)+' days ago check with concerned person once .')
             warning_msgs += _("Product Price ! : ") + warn_msg +"\n\n"
 
         if product_obj.type == 'product':

@@ -22,7 +22,7 @@ class miipl_price_update(osv.TransientModel):
         request_id = context.get('active_id', [])
         product_id=self.pool.get('miipl.product.requisition').browse(cr,uid,request_id,context).product_id
         p_id=self.pool.get('product.product').search(cr,uid,[('product_tmpl_id','=',product_id.id)])
-        po_lines=self.pool.get('purchase.order.line').search(cr,uid,[('product_id','=',p_id[0]),('state','in',('confirmed','done'))],order='create_date desc',limit=10)
+        po_lines=self.pool.get('purchase.order.line').search(cr,uid,[('product_id','=',p_id[0]),('state','in',('confirmed','done'))],order='create_date desc',limit=15)
         purchase_price_history=[]
         for pol in po_lines:
             pol_id=self.pool.get('purchase.order.line').browse(cr,uid,pol,context)

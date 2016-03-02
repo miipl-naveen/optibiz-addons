@@ -35,7 +35,7 @@
 							</tree>
 							</field>
 						</page>
-						<page string="Last Purchased Supplier List">
+						<page string="Current Suppliers">
 							<field name="product_supplier_line">
 							<tree string="Last Purchased Supplier List" default_order="po_date desc" editable="bottom" >
 								<field name="partner_id"/>

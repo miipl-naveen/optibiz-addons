@@ -14,6 +14,7 @@
                                 <span t-field="o.partner_id.vat"/>
                             </p>
                         </div>
+
                         <div class="col-xs-4">
                             <strong>Invoice</strong>
                             <div t-field="o.partner_invoice_id"
@@ -107,6 +108,7 @@
                                 <th groups="sale.group_discount_per_so_line">Disc.(%)</th>
                                 <th class="text-right">Prices</th>
                             </tr>
+
                         </thead>
                         <tbody class="sale_tbody">
                             <tr t-foreach="o.order_line" t-as="l" style="page-break-inside: avoid !important;">
@@ -167,6 +169,7 @@
                                               t-field-options='{"widget": "monetary", "display_currency": "o.pricelist_id.currency_id"}'/>
                                     </td>
                                 </tr>
+
                             </table>
                         </div>
                     </div>
