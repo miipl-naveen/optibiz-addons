@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record forcecreate="True" id="miipl_ir_cron_scheduler_action" model="ir.cron">
+            <field name="name">Price update scheduler</field>
+            <field eval="True" name="active"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field eval="False" name="doall"/>
+            <field eval="'miipl.product.requisition'" name="model"/>
+            <field eval="'run_scheduler'" name="function"/>
+            <field eval="'(True,)'" name="args"/>
+        </record>
+
+
+        <record model="ir.sequence.type" id="miipl_seq_type_request_id">
+            <field name="name">Request</field>
+            <field name="code">miipl.product.requisition</field>
+        </record>
+        <record model="ir.sequence" id="miipl_seq_request_id">
+            <field name="name">Request</field>
+            <field name="code">miipl.product.requisition</field>
+            <field name="prefix">Req</field>
+            <field name="padding">5</field>
+        </record>
+    </data>
+</openerp>

@@ -1,0 +1,1 @@
+import miipl_price_update

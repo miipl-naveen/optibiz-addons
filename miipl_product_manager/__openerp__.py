@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "miipl_wkf",
+    'name': "miipl_product_manager",
 
     'summary': """
-        Implementation for the approval work flow for MIIPL sales order.
+        This module will allow to create new access role 'Product Manager'
         """,
 
     'description': """
-        This module adds workflows and transitions for approval of sales order and quotation within MIIPL
+        This module will allow to create new access role 'Product Manager'
     """,
 
-    'author': "Optibiz India",
+    'author': "Optibiz",
     'website': "http://www.optibiz.in",
 
     # Categories can be used to filter modules in modules listing
@@ -20,16 +20,14 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'sale','crm','miipl_msp','miipl_sale_access_control','miipl_product_price_validation'],
+    'depends': ['base','product','sale','crm','miipl_product_price_validation'],
 
     # always loaded
     'data': [
-        #'security/sale_security.xml',
+         'product_list.xml',
+         'security/product_security.xml',
          'security/ir.model.access.csv',
-        'workflows/flows.xml',
-        'views/sale_order_view.xml',
-        'email_template_project_auto.xml',
-        'sale_report.xml'
+
     ],
     # only loaded in demonstration mode
     'demo': [

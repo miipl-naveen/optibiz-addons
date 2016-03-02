@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <openerp>
+	<data>
+        <record id="product_template_form_view1" model="ir.ui.view">
+            <field name="name">product.template.form.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                   <xpath expr="//page[@string='Information']" position="after">
+                       <page string="Price History">
+                           <field mode="tree" name="miipl_product_history" string="Product History">
+							<tree string="Product History" default_order="create_date desc">
+								<field name="id" invisible="1"/>
+                                <field name="cost" string="Cost Price"/>
+								<field name="sale" string="Selling Price"/>
+								<field name="coordinator_selling_price" />
+								<field name="selling_price" />
+								<field name="min_selling_price" />
+                                <field name="create_date" invisible="1"/>
+                                <field name="create_uid" string="User"/>
+                                <field name="datetime" string="Updated Date"/>
+							</tree>
+						    </field>
+                       </page>
+
+
+                    </xpath>
+
+            </field>
+      </record>
+    </data>
+</openerp>

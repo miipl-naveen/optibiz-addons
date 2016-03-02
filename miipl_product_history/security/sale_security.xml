@@ -6,41 +6,6 @@
 			<field name="category_id" ref="base.module_category_sales_management"/>
 		</record>
 
-        <!--
-        <record model="ir.ui.menu" id="base.menu_sales">
-            <field eval="[(4,ref('sale_team_lead'))]" name="groups_id"/>
-        </record>
-
-        <record model="ir.ui.menu" id="base.menu_base_partner">
-            <field eval="[(4,ref('sale_team_lead')),(4, ref('base.group_sale_salesman')),(4,ref('base.group_sale_manager'))]" name="groups_id"/>
-        </record>-->
-
-        <!--<record model="ir.ui.menu" id="base.menu_aftersale">
-            <field name="groups_id" eval="[(4,ref('sale_team_lead'))]"/>
-        </record>-->
-        <!--
-        <record model="ir.ui.menu" id="crm.menu_crm_opportunities">
-            <field name="groups_id" eval="[(4,ref('sale_team_lead')),(4, ref('base.group_sale_salesman')),(4,ref('base.group_sale_manager'))]"/>
-        </record>
-
-
-        <record model="ir.ui.menu" id="crm.menu_report_crm_phonecalls_tree">
-            <field name="groups_id" eval="[(4,ref('sale_team_lead')),(4, ref('base.group_sale_salesman')),(4,ref('base.group_sale_manager'))]"/>
-        </record>
-
-        <record model="ir.ui.menu" id="sale.menu_sale_order">
-            <field name="groups_id" eval="[(4,ref('sale_team_lead')),(4, ref('base.group_sale_salesman')),(4,ref('base.group_sale_manager'))]"/>
-        </record>-->
-        <!--
-        <record model="ir.ui.menu" id="base.menu_invoiced">
-            <field name="groups_id" eval="[(5,ref('sale_team_lead'))]"/>
-        </record>-->
-
-        <!--<record model="ir.ui.menu" id="crm.menu_crm_case_phone">
-            <field name="groups_id" eval="[(4,ref('sale_team_lead')),(4, ref('base.group_sale_salesman')),(4,ref('base.group_sale_manager'))]"/>
-        </record>-->
-
-
      </data>
 
     <data noupdate="1">

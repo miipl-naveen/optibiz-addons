@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <menuitem id="main_menu_miipl_products" name="Products" sequence="20"/>
+        <menuitem id="left_miipl_products" name="Products" sequence="90" parent="main_menu_miipl_products"/>
+        <menuitem id="miipl_menu_products_varients" action="product.product_normal_action_sell" parent="left_miipl_products" sequence="10"/>
+        <menuitem id="miipl_menu_products_category" action="product.product_category_action" parent="left_miipl_products" sequence="2"/>
+        <menuitem action="product.product_template_action"
+            id="miipl_menu_product_template_action"
+            parent="left_miipl_products" sequence="1" />
+        <menuitem string="Manage Cost Price" action="miipl_product_price_validation.optibiz_product_template_action1"
+            id="miipl_product_template_action"
+            parent="left_miipl_products" sequence="29" />
+    </data>
+</openerp>

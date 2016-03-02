@@ -27,7 +27,7 @@ class sale_order_line_empty_name(osv.osv):
         '''product_obj = self.pool.get('product.product').browse(cr,uid,product,context)
         print product_obj
         d1 = date.today()
-        d2 = datetime.strptime(product_obj.cost_price_last_modified, '%Y-%m-%d').date()
+        d2 = datetime.strptime(product_obj.price_last_modified, '%Y-%m-%d').date()
         daysDiff = str((d1-d2).days)
         price_expiery_in_days = 0
         recordslist = self.pool.get('store.default.values').search(cr, uid, [])
@@ -93,7 +93,7 @@ class sale_order_line_empty_name(osv.osv):
 
         # code to check the product expiry date
         d1 = date.today()
-        d2 = datetime.strptime(product_obj.cost_price_last_modified, '%Y-%m-%d').date()
+        d2 = datetime.strptime(product_obj.price_last_modified, '%Y-%m-%d').date()
         daysDiff = str((d1-d2).days)
         price_expiery_in_days = 0
         print self.pool.get('store.default.values')

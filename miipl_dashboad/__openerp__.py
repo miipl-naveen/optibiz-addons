@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "miipl_wkf",
+    'name': "miipl Dashboard",
 
     'summary': """
-        Implementation for the approval work flow for MIIPL sales order.
+        Dashboard
         """,
 
     'description': """
-        This module adds workflows and transitions for approval of sales order and quotation within MIIPL
+    Dashboard
     """,
 
     'author': "Optibiz India",
@@ -20,16 +20,14 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'sale','crm','miipl_msp','miipl_sale_access_control','miipl_product_price_validation'],
+    'depends': ['base', 'sale','miipl_sale_access_control','miipl_product_manager','miipl_wkf','miipl_product_requisition'],
 
     # always loaded
     'data': [
-        #'security/sale_security.xml',
-         'security/ir.model.access.csv',
-        'workflows/flows.xml',
-        'views/sale_order_view.xml',
-        'email_template_project_auto.xml',
-        'sale_report.xml'
+
+
+        'views/dashboard.xml',
+
     ],
     # only loaded in demonstration mode
     'demo': [

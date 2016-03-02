@@ -9,7 +9,6 @@
                 <field name="state" position="replace">
                     <field name="state" widget="statusbar" statusbar_visible="draft,sent,invoiced,done" statusbar_colors='{"invoice_except":"red","waiting_date":"blue","waiting_mgr_approval":"red","waiting_exec_approval":"red"}'/>
                 </field>
-
                  <xpath expr="/form/header" position="replace">
                      <header>
                          <button name="invoice_recreate" states="invoice_except" string="Recreate Invoice" groups="base.group_user"/>
@@ -18,28 +17,31 @@
                         <button name="action_quotation_send" string="Send by Email" type="object" states="sent,progress,manual" />
                         <button name="print_quotation" string="Print" type="object" states="draft,quote_approved" class="oe_highlight" groups="base.group_user"/>
                         <button name="print_quotation" string="Print" type="object" states="sent,progress,manual" groups="base.group_user"/>
-                        <button string="Request Executive Approval" type="object" name="action_exec_approve" states="draft,sent,quote_approved" class="oe_highlight" groups="base.group_sale_salesman"/>
+                        <button string="Request Executive Approval" type="object" name="action_exec_approve" states="draft,sent" class="oe_highlight" groups="base.group_sale_salesman" />
                         <!-- <button string="Mark as sent" type="workflow" name="signal_quotation_sent" states="draft,waiting_exec_approval,waiting_mgr_approval" class="oe_highlight"/>-->
-                          <button string="Request Manager Approval" type="object" name="action_mgr_approve" states="waiting_exec_approval" class="oe_highlight" groups="miipl_msp.group_sell_on_selling_price,miipl_sale_access_control.sale_team_lead"/>
-                        <button string="Approve Quote" type="object" name="action_quote_approve" states="waiting_exec_approval,waiting_mgr_approval" groups="miipl_sale_access_control.sale_team_lead,base.group_sale_manager"/>
-                        <button string="Reject Quote" type="object" name="action_quote_reject" states="waiting_exec_approval,waiting_mgr_approval" groups="miipl_sale_access_control.sale_team_lead,base.group_sale_manager"/>
-                         <button name="action_button_confirm" states="sent" string="Confirm Sale" class="oe_highlight" type="object" groups="base.group_user"/>
+                         <button string="Request Manager Approval" type="object" name="action_mgr_approve" states="waiting_exec_approval,draft,sent" class="oe_highlight" groups="miipl_sale_access_control.sale_team_lead"/>
+                        <button string="Approve Quote" type="object" name="action_quote_approve" states="waiting_exec_approval" groups="miipl_sale_access_control.sale_team_lead"/>
+                         <button string="Approve Quote" type="object" name="action_mgr_quote_approve" states="waiting_mgr_approval" groups="base.group_sale_manager"/>
+                         <button string="Update Quote" type="object" name="action_update_quote" states="quote_approved,sent,rejected" class="oe_highlight" help="It Will move the quote back to Draft state"/>
+                         <button string="Reject Quote" type="object" name="action_quote_reject" states="waiting_exec_approval" groups="miipl_sale_access_control.sale_team_lead"/>
+                        <button string="Reject Quote" type="object" name="action_quote_mgr_reject" states="waiting_mgr_approval" groups="base.group_sale_manager"/>
+                         <button name="action_button_confirm" states="sent,quote_approved" string="Confirm Sale" class="oe_highlight" type="object" groups="base.group_user"/>
                         <button name="action_view_invoice" string="View Invoice" type="object" class="oe_highlight"
                             attrs="{'invisible': [('invoice_exists', '=', False)]}" groups="base.group_user"/>
                         <button name="%(sale.action_view_sale_advance_payment_inv)d" string="Create Invoice"
                             type="action" states="manual" class="oe_highlight" groups="base.group_user"/>
                         <button name="copy_quotation" states="cancel" string="New Copy of Quotation" type="object"/>
-                        <button name="cancel" states="draft,sent" string="Cancel Quotation" groups="base.group_user"/>
+                        <button name="cancel" states="draft,sent,quote_approved,rejected" string="Cancel Quotation" groups="base.group_user"/>
                         <button name="action_cancel" states="manual,progress" string="Cancel Order" type="object" groups="base.group_user"/>
                         <button name="invoice_cancel" states="invoice_except" string="Cancel Order" groups="base.group_user"/>
                         <field name="state" widget="statusbar" statusbar_visible="draft,sent,progress,done" statusbar_colors='{"invoice_except":"red","waiting_date":"blue"}'/>
                 </header>
                  </xpath>
-                   <!--  <field name="price_unit" position="replace">
-                     <field name="price_unit" string="Unit Price1" onchange="price_validation(produc_id)"/>
-                     </field>-->
+                <!-- confirmed Quote-->
+               <field name="project_id" position="after">
+                   <field name="date_confirm" attrs="{'invisible': [('state','in',('draft','sent','waiting_exec_approval','waiting_mgr_approval','quote_approved'))]}"/>
+                </field>
 
-                  <!-- <button string="Mark as sent" type="workflow" name="signal_quotation_sent" states="draft, waiting_mgr_approval" class="oe_highlight" groups="miipl_msp.group_sell_on_selling_price"/> -->
             </field>
         </record>
 
@@ -54,7 +56,7 @@
             <field name="view_mode">tree,form,calendar,graph</field>
             <field name="inherit_id" ref="sale.action_quotations"/>
             <field name="context">{'search_default_my_sale_orders_filter': 1}</field>
-            <field name="domain">[('state','in',('draft','sent','waiting_exec_approval','waiting_mgr_approval','quote_approved','cancel'))]</field>
+            <field name="domain">[('state','in',('draft','sent','waiting_exec_approval','waiting_mgr_approval','quote_approved','cancel','rejected'))]</field>
             <field name="search_view_id" ref="sale.view_sales_order_filter"/>
             <field name="help" type="html">
               <p class="oe_view_nocontent_create">
@@ -99,6 +101,68 @@
         </record>
 
         <menuitem action="action_orders" id="sale.menu_sale_order" parent="base.menu_sales" sequence="6" groups="base.group_sale_salesman,base.group_sale_manager"/>
+
+        <record id="action_mail_star_feeds" model="ir.actions.client">
+            <field name="name">To-do</field>
+            <field name="tag">mail.wall</field>
+            <field name="res_model">mail.message</field>
+            <field name="inherit_id" ref ="mail.action_mail_star_feeds"/>
+            <field name="context">{
+              'default_model': 'res.users',
+              'default_res_id': uid,
+              'thread_model': 'res.partner',
+              'search_default_message_unread': True
+            }</field>
+            <field name="params" eval="&quot;{
+                'domain': [
+                    ('user_id', '=', uid),
+                ],
+                'view_mailbox': True,
+                'show_compose_message': False
+            }&quot;"/>
+            <field name="help" type="html">
+                <p>
+                    <b>No todo.</b>
+                </p><p>
+                    When you process messages in your inbox, you can mark some
+                    as <i>todo</i>. From this menu, you can process all your todo.
+                </p>
+            </field>
+        </record>
+
+        <record id="view_crm_case_leads_filter" model="ir.ui.view">
+            <field name="name">CRM - Leads Search</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref ="crm.view_crm_case_leads_filter"/>
+            <field name="arch" type="xml">
+                <filter string="My Leads" position="replace">
+                    <filter string="My Leads"
+                            domain="[('user_id','=',uid)]" name="my_leads"
+                            help="Leads that are assigned to me"/>
+                </filter>
+
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="crm_case_category_act_leads_all">
+        <field name="name">Leads</field>
+        <field name="res_model">crm.lead</field>
+        <field name="view_mode">tree,form</field>
+        <field name="inherit_id" ref ="crm.crm_case_category_act_leads_all"/>
+        <field name="domain">['|', ('type','=','lead'), ('type','=',False)]</field>
+        <field name="view_id" ref="crm.crm_case_tree_view_leads"/>
+        <field name="search_view_id" ref="view_crm_case_leads_filter"/>
+        <field name="context">{
+                'default_type':'lead',
+                'stage_type':'lead',
+                'needaction_menu_ref': 'crm.menu_crm_opportunities',
+                'search_default_my_leads':1,
+            }
+        </field>
+
+        </record>
+        <menuitem name="Leads" id="crm.menu_crm_leads" parent="base.menu_sales" sequence="3"
+            action="crm_case_category_act_leads_all"/>
 
     </data>
 

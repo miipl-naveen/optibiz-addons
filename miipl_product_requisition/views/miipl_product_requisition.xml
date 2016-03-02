@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="miipl_product_requisition_form" model="ir.ui.view">
+            <field name="name">Request</field>
+            <field name="model">miipl.product.requisition</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Request"  delete="false" version="7.0">
+
+                    <header>
+                        <button name="%(miipl_product_price_update)d"  string="Cost Price Update" type="action" groups="miipl_product_manager.miipl_product_manager,base.group_erp_manager" attrs="{'invisible':['|',('type','in',(False,'new_product')),('state','in',('2cost_price_updated','3done'))]}"/>
+                        <button name="%(miipl_product_sale_price_update)d"  string="Sale Price Update" type="action" groups="miipl_product_manager.miipl_product_manager,base.group_erp_manager" attrs="{'invisible':['|',('type','in',(False,'new_product')),('state','in',('1draft','3done'))]}"/>
+                        <button name="action_new_product"  type="object" string="Create New Product" groups="miipl_product_manager.miipl_product_manager,base.group_erp_manager" attrs="{'invisible':['|',('type','in',(False,'price_update')),('state','in',('3done','2cost_price_updated'))]}"/>
+                        <button name="action_done"  type="object" string="Product created" groups="miipl_product_manager.miipl_product_manager,base.group_erp_manager" attrs="{'invisible':['|',('type','in',(False,'price_update')),('state','in',('3done','2cost_price_updated'))]}"/>
+                        <field name="state" nolabel="1" readonly="1" widget="statusbar" statusbar_visible="1draft,3done" statusbar_colors='{"1draft":"blue","3done":"green"}' />
+                    </header>
+                    <sheet>
+                        <h1>
+                            <label string="Request " />
+                            <field name="name" class="oe_inline" readonly="1"/>
+                        </h1>
+
+                        <group>
+                            <field name="type"  on_change="onchange_type()"/>
+                            <field name="product_id" on_change="onchange_product_id(product_id)" attrs="{'invisible':[('type','in',(False,'new_product'))],'required':[('type','=','price_update')]}"/>
+                            <field name="price_last_modified" attrs="{'invisible':[('product_id','=',False),('price_last_modified','=',False)]}"/>
+                            <field name="note" attrs="{'required':[('type','=','new_product')]}"/>
+                            <field name="user_id"/>
+                            <field name="section_id"/>
+                            <field name="manager_comment" readonly="True" attrs="{'invisible':[('state','=','1draft')]}"/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="miipl_product_requisition_tree" model="ir.ui.view">
+            <field name="name">Request</field>
+            <field name="model">miipl.product.requisition</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Request" default_order='state,write_date desc' fonts="bold:message_unread==True" colors="blue:state=='1draft';grey:state == '3done'" >
+                    <field name="name"/>
+                    <field name="message_unread" invisible="1"/>
+                    <field name="type"/>
+                    <field name="product_id"/>
+                    <field name="note"/>
+                    <field name="create_date" string="Create Date"/>
+                    <field name="write_date"/>
+                    <field name="date_done" string="Closed Date"/>
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_product_requisition_filter" model="ir.ui.view">
+            <field name="name">miipl.product.requisition</field>
+            <field name="model">miipl.product.requisition</field>
+            <field name="arch" type="xml">
+                <search string="Search Requests">
+                   <field name="name"/>
+                    <field name="type"/>
+                    <field name="product_id"/>
+                    <field name="user_id"/>
+                    <field name="state" />
+               </search>
+            </field>
+        </record>
+
+
+        <record id="action_product_requisition" model="ir.actions.act_window">
+            <field name="name">Request</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">miipl.product.requisition</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_product_requisition_filter"/>
+
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_product_requisition_form">
+			<field name="sequence" eval="3" />
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="miipl_product_requisition_form" />
+			<field name="act_window_id" ref="action_product_requisition" />
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_product_requisition_tree">
+			<field name="sequence" eval="1" />
+			<field name="view_mode">tree</field>
+			<field name="view_id" ref="miipl_product_requisition_tree" />
+			<field name="act_window_id" ref="action_product_requisition" />
+		</record>
+
+        <menuitem id="product_requisitions"
+                action="action_product_requisition" parent="base.menu_product"
+                sequence="5" />
+
+        <record id="miipl_product_requisition_product_manager_form" model="ir.ui.view">
+            <field name="name">Request</field>
+            <field name="model">miipl.product.requisition</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Request"  delete="false" version="7.0">
+
+                    <header>
+                        <button name="%(miipl_product_price_update)d"  string="Cost Price Update" type="action" groups="miipl_product_manager.miipl_product_manager,miipl_product_manager.miipl_product_manager_user,base.group_erp_manager" attrs="{'invisible':['|',('type','in',(False,'new_product')),('state','in',('2cost_price_updated','3done'))]}"/>
+                        <button name="%(miipl_product_sale_price_update)d"  string="Sale Price Update" type="action" groups="miipl_product_manager.miipl_product_manager,base.group_erp_manager" attrs="{'invisible':['|',('type','in',(False,'new_product')),('state','in',('1draft','3done'))]}"/>
+                        <button name="action_new_product"  type="object" string="Create New Product" groups="miipl_product_manager.miipl_product_manager,miipl_product_manager.miipl_product_manager_user,base.group_erp_manager" attrs="{'invisible':['|',('type','in',(False,'price_update')),('state','in',('3done','2cost_price_updated'))]}"/>
+                        <button name="action_done"  type="object" string="Product created" groups="miipl_product_manager.miipl_product_manager,miipl_product_manager.miipl_product_manager_user,base.group_erp_manager" attrs="{'invisible':['|',('type','in',(False,'price_update')),('state','in',('3done','2cost_price_updated'))]}"/>
+                        <field name="state" nolabel="1" readonly="1" widget="statusbar" statusbar_visible="1draft,3done" statusbar_colors='{"1draft":"blue","3done":"green"}' />
+                    </header>
+                    <sheet>
+                        <h1>
+                            <label string="Request " />
+                            <field name="name" class="oe_inline" readonly="1"/>
+                        </h1>
+
+                        <group>
+                            <field name="type"  on_change="onchange_type()" readonly="True"/>
+                            <field name="product_id" on_change="onchange_product_id(product_id)" attrs="{'invisible':[('type','in',(False,'new_product'))],'required':[('type','=','price_update')]}" readonly="True"/>
+                            <field name="price_last_modified" attrs="{'invisible':[('product_id','=',False),('price_last_modified','=',False)]}" readonly="True"/>
+                            <field name="note" readonly="True"/>
+                            <field name="user_id" readonly="True"/>
+                            <field name="section_id" readonly="True"/>
+                            <field name="manager_comment" />
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_product_requisition_product_manager" model="ir.actions.act_window">
+            <field name="name">Request Update</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">miipl.product.requisition</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_product_requisition_filter"/>
+
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_product_manager_product_requisition_tree">
+			<field name="sequence" eval="1" />
+			<field name="view_mode">tree</field>
+			<field name="view_id" ref="miipl_product_requisition_tree" />
+			<field name="act_window_id" ref="action_product_requisition_product_manager" />
+		</record>
+
+		<record model="ir.actions.act_window.view" id="action_product_manager_product_requisition_form">
+			<field name="sequence" eval="3" />
+			<field name="view_mode">form</field>
+			<field name="view_id" ref="miipl_product_requisition_product_manager_form" />
+			<field name="act_window_id" ref="action_product_requisition_product_manager" />
+
+        </record>
+        <menuitem id="product_requisitions_product_manager"
+                action="action_product_requisition_product_manager" parent="miipl_product_manager.left_miipl_products"
+                sequence="7" />
+
+
+        <record id="product_supplierinfo_form_view" model="ir.ui.view">
+            <field name="name">product.supplierinfo.form.view</field>
+            <field name="model">product.supplierinfo</field>
+            <field name="inherit_id" ref="product.product_supplierinfo_form_view" />
+            <field name="arch" type="xml">
+                    <field name="min_qty" position="after">
+                        <field name="cost" string="Cost Price/Unit"/>
+                    </field>
+            </field>
+        </record>
+
+        <record id="product_supplierinfo_tree_view" model="ir.ui.view">
+            <field name="name">product.supplierinfo.tree.view</field>
+            <field name="model">product.supplierinfo</field>
+            <field name="inherit_id" ref="product.product_supplierinfo_tree_view" />
+            <field name="arch" type="xml">
+                <field name="min_qty" position="after">
+                    <field name="cost" string="Cost Price/Unit"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="product_template_form_view" model="ir.ui.view">
+            <field name="name">product.template.common.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="stock_account.view_template_property_form"/>
+            <field name="arch" type="xml">
+                <field name="standard_price" position="replace">
+                    <field name="standard_price"/>
+                </field>
+                <xpath expr="//page[@string='Information']" position="after">
+                        <page string="Supplier Price History">
+                           <field mode="tree" name="seller_price_history_ids" string="Seller Price History">
+							<tree string="Supplier Price History" default_order="create_date desc">
+                                <field name="name" string="Seller"/>
+								<field name="cost" />
+                                <field name="create_date" />
+							</tree>
+						    </field>
+                       </page>
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+
+    <data noupdate="1">
+        <!-- Sale-related subtypes for messaging / Chatter -->
+        <record id="mt_request_created" model="mail.message.subtype">
+            <field name="name">Request Created</field>
+            <field name="res_model">miipl.product.requisition</field>
+            <field name="default" eval="False"/>
+            <field name="description">Request Created</field>
+        </record>
+        <record id="mt_request_closed" model="mail.message.subtype">
+            <field name="name">Request as been closed</field>
+            <field name="res_model">'miipl.product.requisition</field>
+            <field name="default" eval="False"/>
+            <field name="description">Request as been closed</field>
+        </record>
+
+        <!-- Salesteam-related subtypes for messaging / Chatter -->
+        <record id="mt_salesteam_request_created" model="mail.message.subtype">
+            <field name="name">Request Created</field>
+            <field name="sequence">50</field>
+            <field name="res_model">crm.case.section</field>
+            <field name="parent_id" eval="ref('mt_request_created')"/>
+            <field name="relation_field">section_id</field>
+        </record>
+        <record id="mt_salesteam_request_3done" model="mail.message.subtype">
+            <field name="name">Request as been closed</field>
+            <field name="sequence">55</field>
+            <field name="res_model">crm.case.section</field>
+            <field name="parent_id" eval="ref('mt_request_closed')"/>
+            <field name="relation_field">section_id</field>
+        </record>
+
+    </data>
+</openerp>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record model='ir.ui.menu' id='product_requisitions'>
+			<field name="groups_id" eval="[(4,ref('miipl_sale_access_control.sale_team_lead')),(4,ref('base.group_sale_manager')),(4,ref('base.group_sale_salesman')),(4,ref('miipl_product_manager.miipl_product_manager'))]"/>
+		</record>
+        <record model='ir.ui.menu' id='product_requisitions_product_manager'>
+			<field name="groups_id" eval="[(4,ref('miipl_product_manager.miipl_product_manager')),(4,ref('miipl_product_manager.miipl_product_manager_user'))]"/>
+		</record>
+    </data>
+</openerp>

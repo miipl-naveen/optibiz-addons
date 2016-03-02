@@ -3,16 +3,31 @@
 <data noupdate="1">
 
         <!--Email template-->
-        <record id="email_template_project_auto" model="email.template">
-            <field name="name">Send auto email</field>
+        <record id="email_template_exec_approval" model="email.template">
+            <field name="name">Send Approval Request</field>
             <field name="email_from">${object.user_id.login or ''}</field>
-            <field name="subject">New Customer created ${object.name}</field>
-            <field name="email_to">${object.section_id or ''}</field>
+            <field name="subject">Request for Executive Approval ${object.name}</field>
+            <field name="email_to">${object.section_id.user_id.login or ''}</field>
             <field name="model_id" ref="sale.model_sale_order"/>
             <field name="auto_delete" eval="True"/>
             <field name="lang">${object.lang}</field>
             <field name="body_html"><![CDATA[
-            ${object.section_id.user_id.login}
+
+
+            Thank you!
+            ]]></field>
+        </record>
+
+        <record id="email_template_manager_approval" model="email.template">
+            <field name="name">Send Approval Request</field>
+            <field name="email_from">${object.user_id.login or ''}</field>
+            <field name="subject">Request for Manager Approval ${object.name}</field>
+            <field name="email_to">${object.section_id.parent_id.user_id.login or ''}</field>
+            <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="auto_delete" eval="True"/>
+            <field name="lang">${object.lang}</field>
+            <field name="body_html"><![CDATA[
+
 
 
             Thank you!
