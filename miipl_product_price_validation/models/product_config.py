@@ -29,7 +29,6 @@ class sale_config_settings(osv.osv_memory):
 
         price_expiry_in_days = 0
         idlist=self.pool.get('store.default.values').search(cr, uid, [], context=context)
-        print idlist,len(idlist)
         if idlist:
             for record in self.pool.get('store.default.values').browse(cr, uid, idlist, context=context):
                 #print [record.id]['price_expiry_days']
@@ -42,7 +41,6 @@ class sale_config_settings(osv.osv_memory):
     def set_default_product_price_expiry_in_days(self, cr, uid, ids, context=None):
         price_expiry= self.browse(cr, uid, ids[0], context)
         Product_price_expiry=price_expiry.product_price_expiry_in_days
-        print Product_price_expiry
         idlist=self.pool.get('store.default.values').search(cr, uid, [], context=context)
         if len(idlist)>0:
             for record in self.pool.get('store.default.values').browse(cr, uid, idlist, context=context):

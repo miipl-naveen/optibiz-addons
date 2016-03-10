@@ -57,7 +57,6 @@ class product_template(osv.osv):
         res = {}
         for case in self.browse(cr,uid,ids,context):
             res[case.id] = price_history.search(cr, uid, [('product_template_id', '=', case.id)], order='id')
-        print res,'hello'
         return res
     _columns = {
         'miipl_product_history': fields.function(_get_price_history_ids, method=True, type='one2many', obj='product.price.history', string='Product price history' ,readonly=True),

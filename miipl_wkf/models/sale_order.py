@@ -465,6 +465,8 @@ class mail_compose_message(osv.Model):
     _inherit = 'mail.compose.message'
 
     def send_mail(self, cr, uid, ids, context=None):
+
+        print 'hi'
         context = context or {}
         if context.get('default_model') == 'sale.order' and context.get('default_res_id') and context.get('mark_so_as_sent') or context.get('mark_so_as_exec_approval') or context.get('mark_so_as_manager_approval'):
             context = dict(context, mail_post_autofollow=True)
@@ -566,3 +568,35 @@ class res_partner(osv.osv):
 res_partner()
 
 
+
+
+
+class crm_lead(osv.osv):
+    _name='crm.lead'
+    _inherit='crm.lead'
+    def run_scheduler(self, cr, uid, use_new_cursor=False, company_id = False, context=None):
+
+        lead_ids=self.pool.get('crm.lead').search(cr,uid,[],context)
+        print lead_ids
+        for lead_id in lead_ids:
+            lead= self.pool.get('crm.lead').browse(cr,uid,lead_id,context)
+            print lead.user_id.name,lead.section_id.name,lead.section_id.user_id.name
+            partner_id=self.pool.get('res.users').browse(cr,uid,lead.section_id.user_id.id,context).partner_id.id
+            user_list=[]
+            user_list.append(partner_id)
+            post_vars = {'subject': lead.name,
+            'body': "Lead status is not update",
+            'partner_ids': user_list,}
+            thread_pool = self.pool.get('mail.thread')
+            temp_id=thread_pool.message_post(
+            cr, uid, False,
+            type="notification",
+            #subtype="mt_lead_create",
+            context=context,
+            **post_vars)
+
+            '''template = self.pool.get('ir.model.data').get_object(cr, uid, 'crm', 'email_template_opportunity_reminder_mail')
+            print template,partner_id
+            mail_id = self.pool.get('email.template').send_mail(cr, uid, template.id, lead.section_id.user_id.id , force_send=True, context=context)
+            print 'scheduler is running',temp_id,mail_id'''
+crm_lead()

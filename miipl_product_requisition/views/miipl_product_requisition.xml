@@ -25,7 +25,7 @@
                             <field name="type"  on_change="onchange_type()"/>
                             <field name="product_id" on_change="onchange_product_id(product_id)" attrs="{'invisible':[('type','in',(False,'new_product'))],'required':[('type','=','price_update')]}"/>
                             <field name="price_last_modified" attrs="{'invisible':[('product_id','=',False),('price_last_modified','=',False)]}"/>
-                            <field name="note" attrs="{'required':[('type','=','new_product')]}"/>
+                            <field name="note" attrs="{'required':[('type','=','new_product')]}" placeholder="eg: Enter description here"/>
                             <field name="user_id"/>
                             <field name="section_id"/>
                             <field name="manager_comment" readonly="True" attrs="{'invisible':[('state','=','1draft')]}"/>
@@ -207,9 +207,21 @@
 						    </field>
                        </page>
                 </xpath>
+                <!--<xpath expr="/page[@string='Price History']" position="attributes">
+                    <attribute name="groups">miipl_product_manager.miipl_product_manager,miipl_product_manager.miipl_product_manager_user</attribute>
+                </xpath>-->
             </field>
         </record>
-
+        <record id="product_template_form_view1" model="ir.ui.view">
+            <field name="name">product.template.form.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="miipl_product_history.product_template_form_view1"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@string='Price History']" position="attributes">
+                    <attribute name="groups">miipl_product_manager.miipl_product_manager,miipl_product_manager.miipl_product_manager_user</attribute>
+                </xpath>
+            </field>
+        </record>
 
     </data>
 

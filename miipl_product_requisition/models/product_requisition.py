@@ -64,7 +64,6 @@ class miipl_Product_Requisition(osv.osv):
                     daysDiff = int(str((d1-d2).days))
                     price_expiery_in_days = product_details.price_expiry
                     values = {}
-                    print daysDiff, price_expiery_in_days
                     if daysDiff >= price_expiery_in_days:
                         #values['name'] = self.pool['ir.sequence'].get(cr, uid, 'miipl.product.requisition', context=context) or '/'
                         values['type'] ='price_update'
@@ -176,7 +175,6 @@ class miipl_Product_Requisition(osv.osv):
                 option = 3
         if history_ids:
             history_id=self.pool.get('product.price.history').browse(cr,uid,history_ids[0],context)
-            print history_id
             message="%s | Sale Price %s"%(history_id.create_date,history_id.sale)
             '''if option==1:
                 message=message+" Manager Price %s"%(history_id.min_selling_price)
@@ -307,7 +305,6 @@ class product_template(osv.osv):
                 min_cost = s_id[2]['cost']
         if min_cost != 1111111111111 :
             vals['standard_price']=min_cost
-        print vals['seller_ids']
         #if not vals['seller_ids'] :
         #   raise osv.except_osv(('Warning!'),("Cannot create Product with out a supplier'."))
         product_template_id = super(product_template, self).create(cr, uid, vals, context=context)

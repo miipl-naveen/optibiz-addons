@@ -28,6 +28,7 @@
          'security/ir.model.access.csv',
         'workflows/flows.xml',
         'views/sale_order_view.xml',
+        'views/miipl_scheduler.xml',
         'email_template_project_auto.xml',
         'sale_report.xml'
     ],

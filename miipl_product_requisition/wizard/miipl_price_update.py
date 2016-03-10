@@ -32,10 +32,8 @@ class miipl_price_update(osv.TransientModel):
 
         cr.execute("select distinct on (partner_id) partner_id,price_unit,create_date,order_id from purchase_order_line where product_id = "+str(p_id[0])+" and state in ('confirmed','done') order by partner_id, create_date desc")
         for sup in cr.fetchall():
-            print sup[0]
             temp=[0,False,{'purchase_order_id':sup[3],'product_id':p_id[0],'partner_id':sup[0],'price_unit':sup[1],'po_date':sup[2]}]
             sup_list.append(temp)
-            print sup_list
         return {'request_id': request_id,'product_id':product_id.id,'cost':product_id.standard_price,'product_purchase_history':purchase_price_history,'product_supplier_line':sup_list}
     
     def post_comments(self, cr, uid, id, context=None):

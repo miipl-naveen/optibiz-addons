@@ -7,7 +7,7 @@
             <field name="inherit_id" ref="product.product_template_form_view"/>
             <field name="arch" type="xml">
                    <xpath expr="//page[@string='Information']" position="after">
-                       <page string="Price History">
+                       <page string="Price History" groups="base.group_sale_manager">
                            <field mode="tree" name="miipl_product_history" string="Product History">
 							<tree string="Product History" default_order="create_date desc">
 								<field name="id" invisible="1"/>
