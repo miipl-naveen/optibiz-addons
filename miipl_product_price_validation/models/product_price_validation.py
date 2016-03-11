@@ -9,7 +9,7 @@ class product_template(osv.osv):
     _name = "product.template"
     _inherit = ['product.template']
 
-    def price_expiry(self, cr, uid, ids, field_name, arg, context=None):
+    '''def price_expiry(self, cr, uid, ids, field_name, arg, context=None):
         res= {}
         for r in self.browse(cr, uid, ids, context):
             res[r.id] = {
@@ -19,12 +19,11 @@ class product_template(osv.osv):
             d2 = datetime.strptime(r.sale_price_last_modified, '%Y-%m-%d').date()
             product_expiers_in_days = str((d1 - d2).days)
 
-            res[r.id]['product_expiers_in_days']= product_expiers_in_days
+            res[r.id]['product_expiers_in_days']= product_expiers_in_days'''
 
     _columns = {
         'price_expiry':fields.integer('Price Expires', required=True),
         'price_last_modified': fields.date('Price Last modified'),
-        'product_expiers_in_days': fields.function(price_expiry,string='Product price Expiers in Days '),
     }
     _defaults ={'price_expiry':7
 
