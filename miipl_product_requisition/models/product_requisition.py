@@ -162,6 +162,7 @@ class miipl_Product_Requisition(osv.osv):
 
 
     def onchange_product_id(self, cr, uid, ids,product, context=None):
+        pt_id=self.pool.get('product.template').browse(cr,uid,product,context)
         history_ids= self.pool.get('product.price.history').search(cr,uid,[('product_template_id', '=', product)],context)
         sp = self.pool.get('res.users').has_group(cr, uid, 'miipl_msp.group_sell_on_selling_price')
         msp = self.pool.get('res.users').has_group(cr, uid, 'miipl_msp.group_sell_on_minimum_selling_price')
@@ -175,7 +176,7 @@ class miipl_Product_Requisition(osv.osv):
                 option = 3
         if history_ids:
             history_id=self.pool.get('product.price.history').browse(cr,uid,history_ids[0],context)
-            message="%s | Sale Price %s"%(history_id.create_date,history_id.sale)
+            message="%s | Sale Price %s"%(history_id.create_date,pt_id.list_price)
             '''if option==1:
                 message=message+" Manager Price %s"%(history_id.min_selling_price)
             elif option==2:
