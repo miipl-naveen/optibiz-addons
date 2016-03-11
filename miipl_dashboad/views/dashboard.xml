@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- Dash Board-->
+        <!-- Product Manager Tasks -->
+        <record id="requisition_draft" model="ir.actions.act_window">
+            <field name="name">Open Requests</field>
+            <field name="res_model">miipl.product.requisition</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('state','in',['1draft'])]</field>
+        </record>
+
+        <record id="requisition_cost_price_updated" model="ir.actions.act_window">
+            <field name="name">Cost Price Updated Requests</field>
+            <field name="res_model">miipl.product.requisition</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('state','in',['2cost_price_updated'])]</field>
+        </record>
+
+        <record id="requisition_closed" model="ir.actions.act_window">
+            <field name="name">Closed Requests</field>
+            <field name="res_model">miipl.product.requisition</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('state','in',['3done'])]</field>
+        </record>
+
+        <!-- Product Manager Tasks Ends Here-->
+
+        <!-- Lead -->
+        <record id="miipl_lead" model="ir.actions.act_window">
+            <field name="name">Leads</field>
+            <field name="res_model">crm.lead</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'group_by': 'section_id'}</field>
+            <field name="domain">[('type','=','lead')]</field>
+        </record>
+        <record id="miipl_opportunity" model="ir.actions.act_window">
+            <field name="name">Leads</field>
+            <field name="res_model">crm.lead</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'group_by': 'section_id'}</field>
+            <field name="domain">[('type','=','opportunity'),('stage_id.name','=','New')]</field>
+        </record>
+        <record id="miipl_opportunity_won" model="ir.actions.act_window">
+            <field name="name">Leads</field>
+            <field name="res_model">crm.lead</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'group_by': 'section_id'}</field>
+            <field name="domain">[('type','=','opportunity'),('stage_id.name','=','Won')]</field>
+        </record>
+
+
+        <!-- Sales Tasks -->
+
+        <record id="miipl_sale_quote" model="ir.actions.act_window">
+            <field name="name">Sale Quotations</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'group_by': 'section_id'}</field>
+            <field name="domain">[('state','in',['sent','draft'])]</field>
+        </record>
+
+        <record id="miipl_sale_quote_rejected" model="ir.actions.act_window">
+            <field name="name">Sale Quotations</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'group_by': 'section_id'}</field>
+            <field name="domain">[('state','in',['rejected'])]</field>
+        </record>
+
+        <record id="miipl_sale_quote_approved" model="ir.actions.act_window">
+            <field name="name">Sale Quotations</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'group_by': 'section_id'}</field>
+            <field name="domain">[('state','in',['quote_approved'])]</field>
+        </record>
+
+        <record id="miipl_sale_order" model="ir.actions.act_window">
+            <field name="name">Sale Order</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'group_by': 'section_id'}</field>
+            <field name="domain">[('state','in',['progress','manual','done'])]</field>
+        </record>
+
+        <record id="miipl_sale_quote_waiting" model="ir.actions.act_window">
+            <field name="name">Sale quotes - Waiting for approval</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'group_by': 'section_id'}</field>
+            <field name="domain">[('state','in',['waiting_exec_approval','waiting_mgr_approval'])]</field>
+        </record>
+
+
+        <record id="board_purchase_form_pm" model="ir.ui.view">
+            <field name="name">board.purchase.form</field>
+            <field name="model">board.board</field>
+            <field name="arch" type="xml">
+                <form string="Purchase Dashboard" version="7.0">
+                    <board style="1">
+                        <column colspan="1">
+                            <action name="%(requisition_draft)d" string="Open Request" groups="miipl_product_manager.miipl_product_manager,miipl_product_manager.miipl_product_manager_user"/>
+
+                            <action name="%(requisition_cost_price_updated)d" string="Cost Price Updated" groups="miipl_product_manager.miipl_product_manager,miipl_product_manager.miipl_product_manager_user"/>
+
+                            <action name="%(requisition_closed)d" string="Closed Request" groups="miipl_product_manager.miipl_product_manager,miipl_product_manager.miipl_product_manager_user"/>
+
+                            <action name="%(miipl_lead)d"  string="Lead" groups="miipl_sale_access_control.sale_team_lead,base.group_sale_salesman_all_leads,base.group_sale_salesman,base.group_sale_manager"/>
+
+                            <action name="%(miipl_opportunity)d"  string="New Opportunities" groups="miipl_sale_access_control.sale_team_lead,base.group_sale_salesman_all_leads,base.group_sale_salesman,base.group_sale_manager"/>
+
+                            <action name="%(miipl_opportunity_won)d"  string="Opportunities Own" groups="miipl_sale_access_control.sale_team_lead,base.group_sale_salesman_all_leads,base.group_sale_salesman,base.group_sale_manager"/>
+
+                            <action name="%(miipl_sale_quote)d"  string="Sale Quote" groups="miipl_sale_access_control.sale_team_lead,base.group_sale_salesman_all_leads,base.group_sale_salesman,base.group_sale_manager"/>
+
+                            <action name="%(miipl_sale_quote_waiting)d"  string="Sale quotes - Waiting for approval" groups="miipl_sale_access_control.sale_team_lead,base.group_sale_salesman_all_leads,base.group_sale_salesman,base.group_sale_manager"/>
+
+                            <action name="%(miipl_sale_quote_approved)d"  string="Sale Quotes Approved" groups="miipl_sale_access_control.sale_team_lead,base.group_sale_salesman_all_leads,base.group_sale_salesman,base.group_sale_manager"/>
+
+                            <action name="%(miipl_sale_quote_rejected)d"  string="Sale Quotes Rejected" groups="miipl_sale_access_control.sale_team_lead,base.group_sale_salesman_all_leads,base.group_sale_salesman,base.group_sale_manager"/>
+
+                            <action name="%(miipl_sale_order)d"  string="Sale Order" groups="miipl_sale_access_control.sale_team_lead,base.group_sale_salesman_all_leads,base.group_sale_salesman,base.group_sale_manager,base.group_sale_manager"/>
+                        </column>
+                    </board>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="miipl_dashboard">
+            <field name="name">My Dashboard</field>
+            <field name="res_model">board.board</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="usage">menu</field>
+            <field name="view_id" ref="board_purchase_form_pm" />
+        </record>
+
+        <menuitem id="board.menu_board_my_dash"  sequence="5" parent="base.menu_reporting_dashboard"
+            action="miipl_dashboard" />
+
+    </data>
+</openerp>
