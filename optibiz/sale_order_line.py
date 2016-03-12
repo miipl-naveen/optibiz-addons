@@ -93,23 +93,25 @@ class sale_order_line_empty_name(osv.osv):
 
         # code to check the product expiry date
         d1 = date.today()
+
         d2 = datetime.strptime(product_obj.price_last_modified, '%Y-%m-%d').date()
-        daysDiff = int(str((d1-d2).days))
-        '''price_expiery_in_days = 0
-        print self.pool.get('store.default.values')
-        recordslist = self.pool.get('store.default.values').search(cr, uid, [])
-        print recordslist
-        if recordslist:
-            for record in self.pool.get('store.default.values').browse(cr, uid, recordslist, context=context):
-                price_expiery_in_days = record.price_expiry_days
+        if d2:
+            daysDiff = int(str((d1-d2).days))
+            '''price_expiery_in_days = 0
+            print self.pool.get('store.default.values')
+            recordslist = self.pool.get('store.default.values').search(cr, uid, [])
+            print recordslist
+            if recordslist:
+                for record in self.pool.get('store.default.values').browse(cr, uid, recordslist, context=context):
+                    price_expiery_in_days = record.price_expiry_days
 
-        temp = int(daysDiff) - price_expiery_in_days
+            temp = int(daysDiff) - price_expiery_in_days
 
-        print price_expiery_in_days,int(daysDiff)'''
-        price_expiery_in_days = product_obj.price_expiry
-        if daysDiff >= price_expiery_in_days:
-            warn_msg = _('Product price has been updated '+ str(daysDiff)+' days ago check with concerned person once .')
-            warning_msgs += _("Product Price ! : ") + warn_msg +"\n\n"
+            print price_expiery_in_days,int(daysDiff)'''
+            price_expiery_in_days = product_obj.price_expiry
+            if daysDiff >= price_expiery_in_days:
+                warn_msg = _('Product price has been updated '+ str(daysDiff)+' days ago check with concerned person once .')
+                warning_msgs += _("Product Price ! : ") + warn_msg +"\n\n"
 
         if product_obj.type == 'product':
             #determine if the product needs further check for stock availibility
