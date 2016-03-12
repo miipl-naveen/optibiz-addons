@@ -39,15 +39,10 @@ class miipl_price_update(osv.TransientModel):
     def update_cost_price(self, cr, uid, id, context=None):
         if context == None:
             context = {}
-        print '1'
-        print id
         for user in self.browse(cr, uid, id, context=context):
-            print '2'
-            print user
             if not user.supplier_line:
                 raise osv.except_osv(('Warning!'),("Cannot update Product with out a Supplier."))
             price=100000000000
-            print '3'
             for supplier in user.supplier_line:
                 supplier_ids = self.pool.get('product.supplierinfo').search(cr,uid,[('product_tmpl_id','=',user.product_id.id)])
                 flag=0
@@ -143,7 +138,6 @@ class miipl_sale_price_update(osv.TransientModel):
     def post_comments(self, cr, uid, id, context=None):
         if context == None:
             context = {}
-        print id
         for user in self.browse(cr, uid, id, context=context):
             self.pool.get('product.template').write(cr,uid,user.product_id.id,{'list_price':user.sale,'coordinator_selling_price':user.coordinator_selling_price,'selling_price':user.selling_price,'min_selling_price':user.min_selling_price,'price_expiry':user.price_expiry,'price_last_modified':fields.datetime.now()})
             self.pool.get('miipl.product.requisition').action_done(cr, uid,  user.request_id.id, context)
