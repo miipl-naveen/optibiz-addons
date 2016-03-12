@@ -13,7 +13,7 @@ class optibiz_saleorder(osv.osv):
     }
 
     @api.multi
-    def _amount_all(self, field_name, args):
+    '''def _amount_all(self, field_name, args):
         price_list = self.partner_id.property_product_pricelist.id
         res = super(optibiz_saleorder, self)._amount_all(field_name, args)
         if price_list != 1:
@@ -48,7 +48,7 @@ class optibiz_saleorder(osv.osv):
                     selling_price = product.coordinator_selling_price
                 if line.price_unit < selling_price:
                     warnings.warn("Warning...........Message")
-        return res
+        return res'''
 
 
 optibiz_saleorder()
