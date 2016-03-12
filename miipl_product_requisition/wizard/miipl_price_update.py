@@ -8,9 +8,9 @@ class miipl_price_update(osv.TransientModel):
             'request_id':fields.many2one('miipl.product.requisition', 'Request ID', required=False),
             'product_id': fields.many2one('product.template', 'Product', domain=[('sale_ok', '=', True)], readonly=True,),
             'cost': fields.float('Cost Price',readonly=True),
-            'product_purchase_history':fields.one2many('miipl.product.purchase.history', 'miipl_request_id1','Purchase History',limit="2",readonly=True),
+            'product_purchase_history':fields.one2many('miipl.product.purchase.history', 'miipl_request_id1','Purchase History',limit=20,readonly=True),
             'supplier_line': fields.one2many('miipl.supplier', 'miipl_request_id', 'Supplier Cost Price'),
-            'product_supplier_line':fields.one2many('miipl.product.supplier', 'miipl_request_id2','Previous Suppliers',limit="2",readonly=True),
+            'product_supplier_line':fields.one2many('miipl.product.supplier', 'miipl_request_id2','Previous Suppliers',readonly=True),
 
     }
 
@@ -36,14 +36,18 @@ class miipl_price_update(osv.TransientModel):
             sup_list.append(temp)
         return {'request_id': request_id,'product_id':product_id.id,'cost':product_id.standard_price,'product_purchase_history':purchase_price_history,'product_supplier_line':sup_list}
     
-    def post_comments(self, cr, uid, id, context=None):
+    def update_cost_price(self, cr, uid, id, context=None):
         if context == None:
             context = {}
-
+        print '1'
+        print id
         for user in self.browse(cr, uid, id, context=context):
+            print '2'
+            print user
             if not user.supplier_line:
                 raise osv.except_osv(('Warning!'),("Cannot update Product with out a Supplier."))
             price=100000000000
+            print '3'
             for supplier in user.supplier_line:
                 supplier_ids = self.pool.get('product.supplierinfo').search(cr,uid,[('product_tmpl_id','=',user.product_id.id)])
                 flag=0
@@ -78,7 +82,7 @@ class miipl_supplier(osv.TransientModel):
             'name': fields.many2one('res.partner', 'Supplier', required=True,domain = [('supplier','=',True)], ondelete='cascade', help="Supplier of this product"),
             'supplier_cost': fields.float('Cost Price'),
     }
-miipl_price_update()
+miipl_supplier()
 
 class miipl_product_purchase_history(osv.TransientModel):
     _name = 'miipl.product.purchase.history'
@@ -139,7 +143,7 @@ class miipl_sale_price_update(osv.TransientModel):
     def post_comments(self, cr, uid, id, context=None):
         if context == None:
             context = {}
-
+        print id
         for user in self.browse(cr, uid, id, context=context):
             self.pool.get('product.template').write(cr,uid,user.product_id.id,{'list_price':user.sale,'coordinator_selling_price':user.coordinator_selling_price,'selling_price':user.selling_price,'min_selling_price':user.min_selling_price,'price_expiry':user.price_expiry})
             self.pool.get('miipl.product.requisition').action_done(cr, uid,  user.request_id.id, context)

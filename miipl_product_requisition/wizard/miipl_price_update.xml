@@ -23,6 +23,7 @@
 								<field name="product_id" />
 							</group>
 						</group>
+
 					<notebook>
 						<page string="Purchase Price History">
 							<field name="product_purchase_history">
@@ -37,7 +38,7 @@
 						</page>
 						<page string="Current Suppliers">
 							<field name="product_supplier_line">
-							<tree string="Last Purchased Supplier List" default_order="po_date desc" editable="bottom" >
+							<tree string="Last Purchased Supplier List" default_order="po_date desc"  >
 								<field name="partner_id"/>
 								<field name="purchase_order_id"/>
 								<field name="product_id" invisible="1"/>
@@ -61,7 +62,7 @@
 
 
 					<footer>
-						<button string="Update" type="object" name="post_comments" class="oe_highlight" />
+						<button string="Update" type="object" name="update_cost_price" class="oe_highlight" />
 						or
 						<button string="Cancel" class="oe_link" special="cancel" />
 					</footer>
