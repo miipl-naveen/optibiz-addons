@@ -94,8 +94,8 @@ class sale_order_line_empty_name(osv.osv):
         # code to check the product expiry date
         d1 = date.today()
 
-        d2 = datetime.strptime(product_obj.price_last_modified, '%Y-%m-%d').date()
-        if d2:
+        if product_obj.price_last_modified:
+            d2 = datetime.strptime(product_obj.price_last_modified, '%Y-%m-%d').date()
             daysDiff = int(str((d1-d2).days))
             '''price_expiery_in_days = 0
             print self.pool.get('store.default.values')
