@@ -43,13 +43,12 @@ class product_template(osv.osv):
             ids=ids
         else:
             ids=ids[0]
+        if 'list_price' in vals or 'coordinator_selling_price' in vals or 'selling_price' in vals or 'min_selling_price' in vals and 'standard_price' in vals :
+            vals['price_last_modified'] = fields.datetime.now()
         res = super(product_template, self).write(cr, uid, ids, vals, context=context)
         if 'list_price' in vals or 'coordinator_selling_price' in vals or 'selling_price' in vals or 'min_selling_price' in vals and 'standard_price' not in vals :
             self._set_standard_price(cr, uid, ids, 0, context=context)
-        if 'list_price' in vals or 'coordinator_selling_price' in vals or 'selling_price' in vals or 'min_selling_price' in vals and 'standard_price' in vals :
-            vals['price_last_modified'] = fields.datetime.now()
         return res
-
 
 product_template()
 

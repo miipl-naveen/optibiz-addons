@@ -145,7 +145,7 @@ class miipl_sale_price_update(osv.TransientModel):
             context = {}
         print id
         for user in self.browse(cr, uid, id, context=context):
-            self.pool.get('product.template').write(cr,uid,user.product_id.id,{'list_price':user.sale,'coordinator_selling_price':user.coordinator_selling_price,'selling_price':user.selling_price,'min_selling_price':user.min_selling_price,'price_expiry':user.price_expiry})
+            self.pool.get('product.template').write(cr,uid,user.product_id.id,{'list_price':user.sale,'coordinator_selling_price':user.coordinator_selling_price,'selling_price':user.selling_price,'min_selling_price':user.min_selling_price,'price_expiry':user.price_expiry,'price_last_modified':fields.datetime.now()})
             self.pool.get('miipl.product.requisition').action_done(cr, uid,  user.request_id.id, context)
 
 miipl_sale_price_update()
