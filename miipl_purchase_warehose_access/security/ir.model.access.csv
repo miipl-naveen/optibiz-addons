@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_warehouse_user_miipl_supplier_price,miipl.supplier.price,miipl_product_requisition.model_miipl_supplier_price,stock.group_stock_user,1,0,0,0
+access_warehouse_manager_miipl_supplier_price,miipl.supplier.price,miipl_product_requisition.model_miipl_supplier_price,stock.group_stock_manager,1,1,1,0
+access_warehouse_manager_miipl_supplier_price,miipl.supplier.price,miipl_product_requisition.model_miipl_supplier_price,stock.group_stock_manager,1,1,1,0
+access_purchase_manager_miipl_supplier_price,miipl.supplier.price,miipl_product_requisition.model_miipl_supplier_price,purchase.group_purchase_manager,1,1,1,0
+access_purchase_user_miipl_supplier_price,miipl.supplier.price,miipl_product_requisition.model_miipl_supplier_price,purchase.group_purchase_user,1,1,1,0
