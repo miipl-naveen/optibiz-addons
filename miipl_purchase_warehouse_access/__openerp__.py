@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "miipl Purchase Warehouse Access",
+    'name': "miipl_Purchase_Warehouse_Access",
 
     'summary': """
         This Module give the access to purchase and warehouse to sale price history and product price history from optibiz""",

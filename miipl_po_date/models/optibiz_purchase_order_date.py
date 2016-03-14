@@ -1,9 +1,11 @@
 from openerp import models, api , osv
 from datetime import datetime
-from openerp.osv import fields
+from openerp.osv import fields,osv
 
-class optibiz_purchase_order_date(models.Model):
-    _inherit = 'purchase.requisition'
+class optibiz_po_date(osv.osv):
+
+    _name = "purchase.requisition"
+    _inherit = "purchase.requisition"
 
     def _prepare_purchase_order(self, cr, uid, requisition, supplier, context=None):
         supplier_pricelist = supplier.property_product_pricelist_purchase
@@ -20,4 +22,4 @@ class optibiz_purchase_order_date(models.Model):
             'notes': requisition.description,
             'picking_type_id': requisition.picking_type_id.id
         }
-optibiz_purchase_order_date()
+optibiz_po_date()
