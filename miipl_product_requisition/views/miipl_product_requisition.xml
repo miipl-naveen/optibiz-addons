@@ -44,7 +44,7 @@
             <field name="model">miipl.product.requisition</field>
             <field name="type">tree</field>
             <field name="arch" type="xml">
-                <tree string="Request" default_order='state,write_date desc' fonts="bold:message_unread==True" colors="blue:state=='1draft';grey:state == '3done'" >
+                <tree string="Request" default_order='state,write_date desc' fonts="bold:message_unread==True" colors="blue:state=='1draft';red:state =='2cost_price_updated'; grey:state == '3done'" >
                     <field name="name"/>
                     <field name="message_unread" invisible="1"/>
                     <field name="type"/>
@@ -112,7 +112,7 @@
                         <button name="%(miipl_product_sale_price_update)d"  string="Sale Price Update" type="action" groups="miipl_product_manager.miipl_product_manager,base.group_erp_manager" attrs="{'invisible':['|',('type','in',(False,'new_product')),('state','in',('1draft','3done'))]}"/>
                         <button name="action_new_product"  type="object" string="Create New Product" groups="miipl_product_manager.miipl_product_manager,miipl_product_manager.miipl_product_manager_user,base.group_erp_manager" attrs="{'invisible':['|',('type','in',(False,'price_update')),('state','in',('3done','2cost_price_updated'))]}"/>
                         <button name="action_done"  type="object" string="Product created" groups="miipl_product_manager.miipl_product_manager,miipl_product_manager.miipl_product_manager_user,base.group_erp_manager" attrs="{'invisible':['|',('type','in',(False,'price_update')),('state','in',('3done','2cost_price_updated'))]}"/>
-                        <field name="state" nolabel="1" readonly="1" widget="statusbar" statusbar_visible="1draft,3done" statusbar_colors='{"1draft":"blue","3done":"green"}' />
+                        <field name="state" nolabel="1" readonly="1" widget="statusbar" statusbar_visible="1draft,3done" statusbar_colors='{"1draft":"blue","2cost_price_updated":"red","3done":"green"}' />
                     </header>
                     <sheet>
                         <h1>
