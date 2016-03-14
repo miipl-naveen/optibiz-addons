@@ -575,9 +575,8 @@ class crm_lead(osv.osv):
     _name='crm.lead'
     _inherit='crm.lead'
     def run_scheduler(self, cr, uid, use_new_cursor=False, company_id = False, context=None):
-
-        lead_ids=self.pool.get('crm.lead').search(cr,uid,[],context)
-        print lead_ids
+        print 'Lead Scheduler'
+        """lead_ids=self.pool.get('crm.lead').search(cr,uid,[],context)
         for lead_id in lead_ids:
             lead= self.pool.get('crm.lead').browse(cr,uid,lead_id,context)
             print lead.user_id.name,lead.section_id.name,lead.section_id.user_id.name
@@ -595,8 +594,8 @@ class crm_lead(osv.osv):
             context=context,
             **post_vars)
 
-            '''template = self.pool.get('ir.model.data').get_object(cr, uid, 'crm', 'email_template_opportunity_reminder_mail')
+            template = self.pool.get('ir.model.data').get_object(cr, uid, 'crm', 'email_template_opportunity_reminder_mail')
             print template,partner_id
             mail_id = self.pool.get('email.template').send_mail(cr, uid, template.id, lead.section_id.user_id.id , force_send=True, context=context)
-            print 'scheduler is running',temp_id,mail_id'''
+            print 'scheduler is running',temp_id,mail_id"""
 crm_lead()
