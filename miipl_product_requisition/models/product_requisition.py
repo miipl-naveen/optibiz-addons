@@ -89,10 +89,11 @@ class miipl_Product_Requisition(osv.osv):
         }
 
     def action_cost_price_updated(self, cr, uid, ids, context=None):
-        '''if type(ids) is int:
+        if type(ids) is int:
             ids=ids
         else:
             ids=ids[0]
+        self.write(cr,uid,ids,{'state':'2cost_price_updated'},context)
         PR_id=self.browse(cr,uid,ids,context)
         user_list=[]
         partner_id=self.pool.get('res.users',self).browse(cr,uid,PR_id.create_uid.id,context).partner_id.id
@@ -105,24 +106,20 @@ class miipl_Product_Requisition(osv.osv):
             user_list.append(partner_id)
         if PR_id.manager_comment:
             post_vars = {
-             'subject':PR_id.name,
-             'body': "Request as been updated %s"%(PR_id.manager_comment),
+             'body': "Cost Price of the product as been updated %s"%(PR_id.manager_comment),
              'partner_ids': user_list,} # Where "4" adds the ID to the list
                                        # of followers and "3" is the partner ID
         else:
             post_vars = {
-                'subject':PR_id.name,
-             'body': "Request as been updated ",
+             'body': "Cost Price of the product as been updated ",
              'partner_ids': user_list,}
-        thread_pool = self.pool.get('mail.thread')
-        thread_pool.message_post(
+        self.message_post(
         cr, uid, PR_id.id,
         model='miipl.product.requisition',
         type="notification",
-        subtype="mt_request_closed",
         context=context,
-        **post_vars)'''
-        self.write(cr,uid,ids,{'state':'2cost_price_updated'},context)
+        **post_vars)
+
 
     def action_done(self, cr, uid, ids, context=None):
         if type(ids) is int:
@@ -150,8 +147,8 @@ class miipl_Product_Requisition(osv.osv):
                 'subject':PR_id.name,
              'body': "Request as been updated ",
              'partner_ids': user_list,}
-        thread_pool = self.pool.get('mail.thread')
-        thread_pool.message_post(
+
+        self.message_post(
         cr, uid, PR_id.id,
         model='miipl.product.requisition',
         type="notification",
@@ -214,23 +211,22 @@ class miipl_Product_Requisition(osv.osv):
             user_list.append(partner_id)
         self.write(cr,uid,id,{'message_follower_ids':user_list})
         if PR_id.type == 'price_update':
-            post_vars = {'subject': PR_id.name,
+            post_vars = {
              'body': "Update Product Price",
              'partner_ids': user_list,}
         else:
-            post_vars = {'subject': PR_id.name,
+            post_vars = {
              'body': "Add Requested Product",
              'partner_ids': user_list,}
-        thread_pool = self.pool.get('mail.thread')
-        thread_pool.message_post(
-        cr, uid, False,
+        self.message_post(
+        cr, uid, [id],
         type="notification",
         subtype="mt_request_created",
         context=context,
         **post_vars)
         return id
 
-    def _needaction_domain_get(self,cr,uid,context):
+    '''def _needaction_domain_get(self,cr,uid,context):
         """
         Show a count of sick horses on the menu badge.
         An exception: don't show the count to Bob,
@@ -246,7 +242,7 @@ class miipl_Product_Requisition(osv.osv):
         for user_id in cr.fetchall():
             if user_id[0] == uid:
                 return [('state', '=', '1draft')]
-        return False
+        return False'''
 miipl_Product_Requisition()
 
 class miipl_supplier_price(osv.osv):
