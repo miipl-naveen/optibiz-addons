@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_stock_config_settings" model="ir.ui.view">
+            <field name="name">sale settings</field>
+            <field name="model">sale.config.settings</field>
+            <field name="inherit_id" ref="sale.view_sales_config" />
+            <field name="arch" type="xml">
+
+
+
+                <xpath expr="//div[@name='Sale Features']" position="inside">
+                    <div>
+                        <label for="sale_quote_escalation"/>
+                        <field name="sale_quote_escalation" class="oe_inline"/> Hours
+                    </div>
+
+                </xpath>
+
+            </field>
+        </record>
+
+    </data>
+    <data noupdate="1">
+
+
+        <record forcecreate="True" id="miipl_ir_cron_sale_quote_scheduler_action" model="ir.cron">
+            <field name="name">Sale Quote Update Scheduler</field>
+            <field eval="True" name="active"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field eval="False" name="doall"/>
+            <field eval="'sale.order'" name="model"/>
+            <field eval="'run_sale_quote_scheduler'" name="function"/>
+            <field eval="'(True,)'" name="args"/>
+        </record>
+
+        <record forcecreate="True" id="sale_quote_escalation" model="miipl.store.default.values">
+            <field name="name">Sale Quote Escalation</field>
+            <field name="hours">24</field>
+        </record>
+    </data>
+</openerp>
